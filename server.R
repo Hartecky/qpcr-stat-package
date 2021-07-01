@@ -133,7 +133,11 @@ shinyServer(function(input, output) {
         
         pcr.tmp <- data()
         
-        pcr.melt = melting.data(dataframe = pcr.tmp, id_variables = "Temperature")
+        if(colnames(pcr.tmp)[1]=="Temperature"){
+            pcr.melt = melting.data(dataframe = pcr.tmp, id_variables = "Temperature")
+        } else {
+            stop("Data provided for qPCR fluorescence visualisation is incorrect. Exit code with status 1")
+        }
     })
     
     output$pcr.plot <- renderPlotly({
@@ -142,6 +146,13 @@ shinyServer(function(input, output) {
         
         # Return overview of the data with head
         fluorescence.plot(pcr.data())
+    })
+    
+    output$pcr.msg <- renderPrint({
+        
+        req(input$file1, pcr.data())
+        
+        return("Data provided for qPCR fluorescence visualisation is correct. Exit code with status 0")
     })
 })
 
