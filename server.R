@@ -105,7 +105,7 @@ shinyServer(function(input, output) {
                  X.LOD = lod.data()$x.lod)
     })
     
-    # Print Limit of detection summary statistics
+    # Print Limit of detection summary statistics ------------------------------
     output$lod.stats <- renderPrint({
         
         # Require provided input file with data
@@ -117,12 +117,31 @@ shinyServer(function(input, output) {
                    lod.value = lod.data()$x.lod,
                    se.lod.value = lod.data()$se.lod)
     })
-
+    
+    # Print message about performed analysis -----------------------------------
     output$lod.msg <- renderPrint({
 
         req(input$file1, lod.data())
 
         return("Data provided for LOD calculation is correct. Exit code with status 0")
+    })
+    
+    # FLUORESCENCE
+    pcr.data <- reactive({
+        
+        req(input$file1)
+        
+        pcr.tmp <- data()
+        
+        pcr.melt = melting.data(dataframe = pcr.tmp, id_variables = "Temperature")
+    })
+    
+    output$pcr.plot <- renderPlotly({
+        # Require provided input file with data
+        req(input$file1)
+        
+        # Return overview of the data with head
+        fluorescence.plot(pcr.data())
     })
 })
 
