@@ -34,7 +34,6 @@ shinyUI(fluidPage(
                        lod.plotting, 
                        lod.msg),
               tabPanel("Fluorescence Visualisation", 
-                       pcr.plotting,
-                       pcr.msg),
+                       pcr.plotting),
               tabPanel("Labeling Data"),
               tabPanel("Diff Plots"))))

@@ -132,11 +132,21 @@ shinyServer(function(input, output) {
         req(input$file1)
         
         pcr.tmp <- data()
-        
+
         if(colnames(pcr.tmp)[1]=="Temperature"){
             pcr.melt = melting.data(dataframe = pcr.tmp, id_variables = "Temperature")
         } else {
-            stop("Data provided for qPCR fluorescence visualisation is incorrect. Exit code with status 1")
+            stop("
+                 Data provided for qPCR fluorescence visualisation is incorrect. Exit code with status 1.
+                 Common problems:
+                 - First column is not the 'Temperature' column;
+                 - incorrect separators for values or digits;
+                 - undeclared header;
+                 - wrong first column name
+                 
+                 
+                 Example of the correct data:
+                 ")
         }
     })
     
@@ -148,11 +158,5 @@ shinyServer(function(input, output) {
         fluorescence.plot(pcr.data())
     })
     
-    output$pcr.msg <- renderPrint({
-        
-        req(input$file1, pcr.data())
-        
-        return("Data provided for qPCR fluorescence visualisation is correct. Exit code with status 0")
-    })
 })
 
