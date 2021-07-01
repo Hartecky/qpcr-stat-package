@@ -3,12 +3,8 @@
 # and logit model to calculate limit of detection of
 # qPCR reaction and plot it with significance of 95%
 
-
-# Calculates the difference between total samples 
-# and positives results, then creates a matrix 
-# containing the number of positives and the 
-# difference betweet positives and total
 define.freq <- function(dataframe) {
+  attach(dataframe)
   total.diff <- total - positive
   
   Y <- cbind(positive, total.diff)

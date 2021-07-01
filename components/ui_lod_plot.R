@@ -12,3 +12,9 @@ lod.plotting <- mainPanel(
   verbatimTextOutput("lod.stats"), 
   width = 12
 )
+
+lod.msg <- mainPanel(
+  tags$hr(),
+  strong("Analysis info"),
+  verbatimTextOutput("lod.msg")
+)

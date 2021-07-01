@@ -1,6 +1,7 @@
 prepare.set <- function(model, x.lod, alpha) {
-  dil <- 10^seq(-1,1,0.01)
   
+  dil <- 10^seq(-1,1,0.01)
+
   pred.data <- predict(model,
                        newdata = data.frame(dilution = dil),
                        type="response")
@@ -18,4 +19,6 @@ prepare.set <- function(model, x.lod, alpha) {
               pred.df = pred.df, 
               top.interval= top.interval, 
               bottom.interval = bottom.interval))
+  
+  detach(data)
 }

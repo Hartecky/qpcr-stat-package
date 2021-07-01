@@ -1,102 +1,128 @@
+# AmpliStat Shiny App 
 #
 # This is the server logic of a Shiny web application. You can run the
 # application by clicking 'Run App' above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
-#
+
 
 library(shiny)
 
 # Define server logic 
 shinyServer(function(input, output) {
 
-    # STATISTICS ANALYSIS ----------------------------------------------------
+    # Loading data into application --------------------------------------------
 
-    data <- reactive({
-        file1 <- input$file1
-        if (is.null(file1)) {
-            return()
+    data <- reactive({ file1 <- input$file1
+    
+    if (is.null(file1)) {
+        return()
         }
-        data = read.table(
-            file = file1$datapath,
-            header = input$header,
-            sep = input$sep,
-            dec = input$dec,
-            stringsAsFactors = input$string
-        )
+    
+    data = read.table(file = file1$datapath,
+                      header = input$header,
+                      sep = input$sep,
+                      dec = input$dec,
+                      stringsAsFactors = input$string)
     })
     
-    
+    # Processing data for LOD calculation --------------------------------------
     lod.data <- reactive({
+        
+        # Require provided input file with data
         req(input$file1)
         lod.matrix <- data()
 
+        # Check the dimension of the provided data
         if(dim(lod.matrix)[1]==3 & dim(lod.matrix)[2]==3) {
+            
             Y = define.freq(lod.matrix)
-            model.glm <- fit.model(Y, lod.matrix)
-
+            
+            # Prepare logistic model
+            model.glm <- fit.model(Y, 
+                                   lod.matrix)
+            
+            # Calculate predictions at 95% significance level
             level = logit.value(0.95)
-            X.LOD <- LOD(model.glm, level)
-            log.SE.LOD <- se.computations(model.glm, X.LOD)
+            
+            X.LOD <- LOD(model.glm, 
+                         level)
+            
+            log.SE.LOD <- se.computations(model.glm, 
+                                          X.LOD)
 
-            plot.labs <- prepare.set(model.glm, X.LOD, level)
+            plot.labs <- prepare.set(model.glm, 
+                                     X.LOD, 
+                                     level)
+            
             pred.data <- plot.labs$pred.df
             top.interval <- plot.labs$top.interval
             bottom.interval <- plot.labs$bottom.interval
 
-            lod.data = list(
-                pred.data = pred.data,
-                top.interval = top.interval,
-                bottom.interval = bottom.interval,
-                x.lod = X.LOD,
-                significance = 0.95,
-                logit.value = level,
-                se.lod = log.SE.LOD
-            )
-            
-        } else {
-            return()
-        }
-    })
+            # Return calculation results into DataFrame
+            lod.data = list(pred.data = pred.data,
+                            top.interval = top.interval,
+                            bottom.interval = bottom.interval,
+                            x.lod = X.LOD,
+                            significance = 0.95,
+                            logit.value = level,
+                            se.lod = log.SE.LOD)
+            } else {
+                stop("Data provided for LOD calculation is incorrect. Exit code with status 1")
+            }
+        })
+    
+    # Render overview of the data ----------------------------------------------
     output$contents <- renderDataTable({
-        # input$file1 will be NULL initially. After the user selects
-        # and uploads a file, head of that data file by default,
-        # or all rows if selected, will be shown.
+        
+        # Require provided input file with data
         req(input$file1)
-
+        
+        # Return overview of the data with head
         head(data())
     })
-
+    
+    # Render summary statistics of the provided data ---------------------------
     output$stats <- renderPrint({
+        
+        # Require provided input file with data
         req(input$file1)
-
+        
+        # Return summary statistics in a verbatim text output
         summary(data())
     })
     
-    # LOD ANALYSIS ------------------------------------------------------------
-    
-    # Load data and perform LOD calculations
-    # then return plot with calculated LOD value
+    # Limit of detection plot --------------------------------------------------
     output$lod.plot <- renderPlotly({
+        
+        # Require provided input file with data, and also
+        # require calculated coefficients from LOD calculations
         req(input$file1, lod.data())
-
+        
+        # Return Limit of Detection interactive plot with pointed values
         lod.plot(data = data(),
                  pred.data = lod.data()$pred.data, 
                  top.interval = lod.data()$top.interval, 
                  bottom.interval = lod.data()$bottom.interval, 
                  X.LOD = lod.data()$x.lod)
- 
     })
     
+    # Print Limit of detection summary statistics
     output$lod.stats <- renderPrint({
+        
+        # Require provided input file with data
         req(input$file1, lod.data())
         
+        # Return a dataframe with calculated values
         data.frame(significance = lod.data()$significance,
                    logit.value = lod.data()$logit.value,
                    lod.value = lod.data()$x.lod,
                    se.lod.value = lod.data()$se.lod)
+    })
+
+    output$lod.msg <- renderPrint({
+
+        req(input$file1, lod.data())
+
+        return("Data provided for LOD calculation is correct. Exit code with status 0")
     })
 })
 

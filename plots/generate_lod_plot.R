@@ -1,5 +1,7 @@
 lod.plot <- function(data, pred.data, top.interval, bottom.interval, X.LOD){
+  
   dil <- 10^seq(-1,1,0.01)
+  
   p <- ggplot() +
     geom_line(data = pred.data, aes(dil, pred)) +
     geom_point(data = data, aes(dilution, positive/total)) +
