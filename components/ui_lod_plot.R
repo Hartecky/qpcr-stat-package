@@ -1,7 +1,5 @@
 library(shiny)
 library(plotly)
-# lod.plotting.data <- plotlyOutput("lod.plot")
-# lod.values.data <- verbatimTextOutput("lod.stats")
 
 lod.plotting <- mainPanel(
   tags$hr(),
