@@ -19,6 +19,4 @@ prepare.set <- function(model, x.lod, alpha) {
               pred.df = pred.df, 
               top.interval= top.interval, 
               bottom.interval = bottom.interval))
-  
-  detach(data)
 }

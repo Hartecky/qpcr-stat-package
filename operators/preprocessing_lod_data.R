@@ -9,6 +9,8 @@ define.freq <- function(dataframe) {
   
   Y <- cbind(positive, total.diff)
   
+  
+  detach(dataframe)
   return(Y)
 }
 
