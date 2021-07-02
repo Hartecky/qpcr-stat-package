@@ -144,8 +144,13 @@ shinyServer(function(input, output) {
                  - undeclared header;
                  - wrong first column name
                  
-                 
                  Example of the correct data:
+                 
+                 Temperature; 1; 2; 3
+                 79,99; 89,38; 89,39; 89,54
+                 80,00; 89,34; 89,35; 89,50
+                 80,01; 89,30; 89,31; 89,46
+                 80,02; 89,25; 89,27; 89,42
                  ")
         }
     })
