@@ -163,5 +163,22 @@ shinyServer(function(input, output) {
         fluorescence.plot(pcr.data())
     })
     
+    # DATA VISUALISATION MODULE ------------------------------------------------
+    output$select.var <- renderUI({
+        selectInput('select.var', 'Choose variable', choices = names(data()))
+    })
+    
+    
+    data1 <- reactive({
+        input$select.var
+    })
+    
+    
+    output$data.plot <- renderPlotly({
+        req(input$file1, data1())
+        print(data1())
+        hist.plot(data(), data()[[data1()]])
+    })
+    
 })
 

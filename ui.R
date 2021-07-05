@@ -3,19 +3,37 @@
 
 library(shiny)
 
+# HOME LINUX -------------------------------------------------------------------
 # Components scripts
-source('/home/hartek/AmpliStat/components/ui_data_upload.R')
-source('/home/hartek/AmpliStat/components/ui_lod_plot.R')
-source('/home/hartek/AmpliStat/components/ui_fluorescence_plot.R')
+# source('/home/hartek/AmpliStat/components/ui_data_upload.R')
+# source('/home/hartek/AmpliStat/components/ui_lod_plot.R')
+# source('/home/hartek/AmpliStat/components/ui_fluorescence_plot.R')
+# 
+# # Operators scripts
+# source('/home/hartek/AmpliStat/operators/configure_lod_set.R')
+# source('/home/hartek/AmpliStat/operators/preprocessing_lod_data.R')
+# source('/home/hartek/AmpliStat/operators/melt_data.R')
+# 
+# # Plots
+# source('/home/hartek/AmpliStat/plots/generate_lod_plot.R')
+# source('/home/hartek/AmpliStat/plots/fluorescence_plot.R')
+
+# WORK WINDOWS -----------------------------------------------------------------
+source('/Users/Bartek/Desktop/AmpliStat/components/ui_data_upload.R')
+source('/Users/Bartek/Desktop/AmpliStat/components/ui_lod_plot.R')
+source('/Users/Bartek/Desktop/AmpliStat/components/ui_fluorescence_plot.R')
+source('/Users/Bartek/Desktop/AmpliStat/components/ui_data_visualisation.R')
 
 # Operators scripts
-source('/home/hartek/AmpliStat/operators/configure_lod_set.R')
-source('/home/hartek/AmpliStat/operators/preprocessing_lod_data.R')
-source('/home/hartek/AmpliStat/operators/melt_data.R')
+source('/Users/Bartek/Desktop/AmpliStat/operators/configure_lod_set.R')
+source('/Users/Bartek/Desktop/AmpliStat/operators/preprocessing_lod_data.R')
+source('/Users/Bartek/Desktop/AmpliStat/operators/melt_data.R')
 
 # Plots
-source('/home/hartek/AmpliStat/plots/generate_lod_plot.R')
-source('/home/hartek/AmpliStat/plots/fluorescence_plot.R')
+source('/Users/Bartek/Desktop/AmpliStat/plots/generate_lod_plot.R')
+source('/Users/Bartek/Desktop/AmpliStat/plots/fluorescence_plot.R')
+source('/Users/Bartek/Desktop/AmpliStat/plots/histogram_plot.R')
+
 
 # Define UI for application
 shinyUI(fluidPage(
@@ -28,9 +46,8 @@ shinyUI(fluidPage(
                       import_data),
              
              tabPanel("Data Visualisation",
-                      tabsetPanel(
-                        tabPanel("Histogram"),
-                        tabPanel("Boxplot"))),
+                      select.variables,
+                      view.plot),
              
              tabPanel("Assumptions",
                       tabsetPanel(
