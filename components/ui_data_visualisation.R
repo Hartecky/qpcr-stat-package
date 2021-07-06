@@ -1,16 +1,30 @@
 library(shiny)
 library(plotly)
 
-select.variables <- sidebarPanel(
-  strong("Prepare plots for data visualisation"),
-  tags$br(),
-  uiOutput('select.var'),
-  tags$hr()
-  # selectInput('plots', "Select plot",
-  #             choices = c("Box plot", "Histogram", "Scatter plot"))
-)
-
-view.plot <- mainPanel(tags$hr(),
-                       strong("Data Visualisation"),
-                       plotlyOutput("data.plot"),
-                       width = 12)
+data_views <- sidebarLayout(
+  
+  # Layout for chosing variables
+  sidebarPanel(
+    strong("Data Visualisation panel"),
+    tags$br(),
+    tags$br(),
+    # uiOutput for variables avalaible in dataframe
+    uiOutput('data.variables'),
+    
+    tags$hr(),
+    
+    # Select Input for the type of plot
+    
+    selectInput('plot.types', 'Choose plot type',
+                choices = c('Histogram',
+                            'Boxplot',
+                            'Scatter plot'))),
+  
+  # Layout for plotting results
+  mainPanel(
+    strong("Plots"),
+    tags$hr(),
+    plotOutput('plot.vis'),
+    tags$hr(),
+    textOutput('text.out')
+  ))
