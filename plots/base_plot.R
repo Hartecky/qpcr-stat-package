@@ -1,9 +1,11 @@
 library(ggplot2)
 library(plotly)
+library(shiny)
 
-hist.plot <- function(x){
+# Function generating histogram plot
+hist.plot <- function(x, bins){
   gg.hist <- ggplot() +
-    geom_histogram(aes(x), bins = 25) +
+    geom_histogram(aes(x), bins = bins) +
     ggtitle("Histogram plot") +
     xlab("Distribution series") +
     ylab("Count")
@@ -11,6 +13,7 @@ hist.plot <- function(x){
   ggplotly(gg.hist)
 }
 
+# Function generating boxplot
 box.plot <- function(x, var){
   gg.box <- ggplot() +
     geom_boxplot(aes(y = x)) +
@@ -21,6 +24,7 @@ box.plot <- function(x, var){
   ggplotly(gg.box)
 }
 
+# Function generating scatter plot
 scatter.plot <- function(x, var){
   gg.scatter <- qplot(x = seq_along(x),
                       y = x, 
@@ -31,9 +35,11 @@ scatter.plot <- function(x, var){
   ggplotly(gg.scatter)
 }
 
-generate.plot <- function(x, var, plot.option){
+# Function which is deciding which plot will be
+# shown based on selectInput option from UI
+generate.plot <- function(x, var, plot.option, bins){
   if (plot.option == 'histogram') {
-    hist.plot(x)
+    hist.plot(x, bins)
   } else if (plot.option == 'boxplt') {
     box.plot(x, var)
   } else if (plot.option == 'scatter') {
