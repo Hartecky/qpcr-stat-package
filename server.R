@@ -23,7 +23,7 @@ server <- function(input, output, session) {
         )
     })
     
-    output$contents <- renderTable({
+    output$contents <- renderDataTable({
         # input$file1 will be NULL initially. After the user selects
         # and uploads a file, head of that data file by default,
         # or all rows if selected, will be shown.
@@ -41,6 +41,10 @@ server <- function(input, output, session) {
     
     output$select.variable <- renderUI({
         selectInput('select.variable', 'Variable X', choices = names(data()))
+    })
+    
+    output$select.variable.assum <- renderUI({
+        selectInput('select.variable.assum', 'Variable X', choices = names(data()))
     })
     
     output$base_plots_output <- renderPlot({

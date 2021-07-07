@@ -35,53 +35,31 @@ ui <- fluidPage(navbarPage(
           multiple = T,
           accept = c("text/csv",
                      "text/comma-separated-values,text/plain",
-                     ".csv")
-        ),
-        
-        # Input: Checkbox if file has header ----
+                     ".csv")),
         checkboxInput("header", "Header", TRUE),
-        
-        # Input: Select separator ----
-        radioButtons(
-          "sep",
-          "Separator",
-          choices = c(
-            Comma = ",",
-            Semicolon = ";",
-            Tab = "\t"
-          ),
-          selected = ","
-        ),
-        radioButtons(
-          "dec",
-          "Decimal",
-          choices = c(Dot = '.',
-                      Comma = ","
-          ),
-          selected = '.'
-        ),
+        radioButtons("sep",
+                     "Separator",
+                     choices = c(Comma = ",",
+                                 Semicolon = ";",
+                                 Tab = "\t"),
+                     selected = ","
+                     ),
+        radioButtons("dec",
+                     "Decimal",
+                     choices = c(Dot = '.',Comma = ","),
+                     selected = '.'),
         tags$hr(),
         checkboxInput('string', "Strings as factor", TRUE),
-        # Horizontal line ----
         tags$hr(),
         
-        # Input: Select number of rows to display ----
-        radioButtons(
-          "disp",
-          "Display",
-          choices = c(Head = "head",
-                      All = "all"),
-          selected = "head"
-        ),
-        submitButton("Update view", icon("refresh"))
-        
-      ),
+        radioButtons("disp",
+                     "Display",
+                     choices = c(Head = "head",
+                                 All = "all"),
+                     selected = "head"),
+        submitButton("Update view", icon("refresh"))),
       
-      # Main panel for displaying outputs ----
-      mainPanel(# Output: Data file ----
-                tableOutput("contents"))
-    )
-  ),
+      mainPanel(dataTableOutput("contents")))),
   
   tabPanel(
     'Data Visualisation', 
@@ -90,6 +68,7 @@ ui <- fluidPage(navbarPage(
     sidebarLayout(
       sidebarPanel(
         strong('Select variable'),
+        tags$hr(),
         uiOutput('select.variable'),
         tags$hr(),
         selectInput('plot.type',
@@ -97,10 +76,27 @@ ui <- fluidPage(navbarPage(
                     choices = c('Histogram',
                                 'Boxplot',
                                 'Scatter plot')),
-        submitButton()
-      ),
+        submitButton()),
       mainPanel(plotOutput('base_plots_output'))
-    ))
-))
+    )),
+  
+  tabPanel(
+    'Assumptions',
+    titlePanel("Check assumptions panel"),
+    tags$hr(),
+    sidebarLayout(
+      sidebarPanel(
+        strong("Select variable"),
+        tags$hr(),
+        uiOutput('select.variable.assum'),
+        tags$hr(),
+        selectInput('check.assumps',
+                    'Choose analysis',
+                    choices = c('Distribution normality',
+                                'Variance Homogenity',
+                                'Outliers Detection')),
+        submitButton()),
+      mainPanel(verbatimTextOutput('assumptions_output'))
+))))
 
 
