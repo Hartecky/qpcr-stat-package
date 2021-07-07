@@ -59,7 +59,8 @@ ui <- fluidPage(navbarPage(
                      selected = "head"),
         submitButton("Update view", icon("refresh"))),
       
-      mainPanel(dataTableOutput("contents")))),
+      mainPanel(dataTableOutput("contents"),
+                verbatimTextOutput('contents.stats')))),
   
   tabPanel(
     'Data Visualisation', 
@@ -73,11 +74,11 @@ ui <- fluidPage(navbarPage(
         tags$hr(),
         selectInput('plot.type',
                     'Choose plot type',
-                    choices = c('Histogram',
-                                'Boxplot',
-                                'Scatter plot')),
+                    choices = c(Histogram = 'histogram',
+                                Boxplot = 'boxplt',
+                                Scatter = 'scatter')),
         submitButton()),
-      mainPanel(plotOutput('base_plots_output'))
+      mainPanel(plotlyOutput('base_plots_output'))
     )),
   
   tabPanel(
