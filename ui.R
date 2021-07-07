@@ -103,6 +103,11 @@ ui <- fluidPage(navbarPage(
                       titlePanel("Parametric tests for comparing means between samples"),
                       sidebarLayout(
                         sidebarPanel(
+                          strong("Choose T-test type"),
+                          selectInput('t.test.type',
+                                      'T-test type',
+                                      choices = c("One sample",
+                                                  "Two samples")),
                           tags$hr(),
                           strong("Select variable"),
                           uiOutput('select.variable.mcp'),
@@ -115,6 +120,11 @@ ui <- fluidPage(navbarPage(
                       titlePanel("Non-parametric tests for comparing means between samples"),
                       sidebarLayout(
                         sidebarPanel(
+                          strong('Choose test type'),
+                          selectInput('mcnp.test.type',
+                                      'Test type',
+                                      choices = c("One sample",
+                                                  "Two samples")),
                           tags$hr(),
                           strong("Select variable"),
                           uiOutput('select.variable.mcnp'),
@@ -128,6 +138,11 @@ ui <- fluidPage(navbarPage(
                       titlePanel("Parametric tests for analysis of variance"),
                       sidebarLayout(
                         sidebarPanel(
+                          strong("Choose test type"),
+                          selectInput('aovp.test.type',
+                                      'Test type',
+                                      choices = c("One sample",
+                                                  "Two samples")),
                           tags$hr(),
                           strong("Select variable"),
                           uiOutput('select.variable.aovp'),
@@ -140,6 +155,11 @@ ui <- fluidPage(navbarPage(
                       titlePanel("Non-parametric tests for analysis of variance"),
                       sidebarLayout(
                         sidebarPanel(
+                          strong("Choose test type"),
+                          selectInput('aovnp.test.type',
+                                      'Test type',
+                                      choices = c("One sample",
+                                                  "Two samples")),
                           tags$hr(),
                           strong("Select variable"),
                           uiOutput('select.variable.aovnp'),
