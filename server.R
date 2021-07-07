@@ -8,7 +8,6 @@ library(shiny)
 # Define server logic 
 server <- function(input, output, session) {
     
-    #options(shiny.maxRequestSize = 60 * 1024 ^ 2)
     data <- reactive({
         file1 <- input$file1
         if (is.null(file1)) {
@@ -24,10 +23,6 @@ server <- function(input, output, session) {
     })
     
     output$contents <- renderDataTable({
-        # input$file1 will be NULL initially. After the user selects
-        # and uploads a file, head of that data file by default,
-        # or all rows if selected, will be shown.
-        
         req(input$file1)
         
         if (input$disp == "head") {
@@ -39,6 +34,7 @@ server <- function(input, output, session) {
         
     })
     
+    # IMPORT VARIABLE NAMES INTO SELECT INPUTS ---------------------------------
     output$select.variable <- renderUI({
         selectInput('select.variable', 'Variable X', choices = names(data()))
     })
@@ -47,6 +43,28 @@ server <- function(input, output, session) {
         selectInput('select.variable.assum', 'Variable X', choices = names(data()))
     })
     
+    output$select.variable.assum <- renderUI({
+        selectInput('select.variable.assum', 'Variable X', choices = names(data()))
+    })
+    
+    output$select.variable.mcp <- renderUI({
+        selectInput('select.variable.mcp', 'Variable X', choices = names(data()))
+    })
+    
+    output$select.variable.mcnp <- renderUI({
+        selectInput('select.variable.mcnp', 'Variable X', choices = names(data()))
+    })
+    
+    output$select.variable.aovp <- renderUI({
+        selectInput('select.variable.mcnp', 'Variable X', choices = names(data()))
+    })
+    
+    output$select.variable.aovnp <- renderUI({
+        selectInput('select.variable.mcnp', 'Variable X', choices = names(data()))
+    })
+    
+    
+    # PLOTS --------------------------------------------------------------------
     output$base_plots_output <- renderPlot({
         req(input$select.variable)
         
