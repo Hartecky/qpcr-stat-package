@@ -32,7 +32,7 @@ ui <- fluidPage(navbarPage(
         fileInput(
           'file1',
           'Choose CSV file',
-          multiple = F,
+          multiple = T,
           accept = c("text/csv",
                      "text/comma-separated-values,text/plain",
                      ".csv")
@@ -80,8 +80,8 @@ ui <- fluidPage(navbarPage(
       # Main panel for displaying outputs ----
       mainPanel(# Output: Data file ----
                 tableOutput("contents"))
-        )
-      ),
+    )
+  ),
   
   tabPanel(
     'Data Visualisation', 
@@ -100,101 +100,7 @@ ui <- fluidPage(navbarPage(
         submitButton()
       ),
       mainPanel(plotOutput('base_plots_output'))
-    )),
-  
-  tabPanel(
-    'Assumptions', 
-    titlePanel("Check assumptions Panel"),
-    tags$hr(),
-    sidebarLayout(
-      sidebarPanel(
-        strong('Select variable'),
-        uiOutput('select.variable'),
-        tags$hr(),
-        selectInput('check.assumps',
-                    'Choose analysis',
-                    choices = c('Distribution normality',
-                                'Variance Homogenity',
-                                'Outliers detection')),
-        submitButton()
-      ),
-      mainPanel(verbatimTextOutput('assumps_output'))
-    )),
-  
-  navbarMenu('Means Comparison',
-             tabPanel('Parametric',
-                      titlePanel("Parametric tests for comparing means between samples"),
-                      sidebarLayout(
-                        sidebarPanel(
-                          tags$hr(),
-                          strong("Select variable"),
-                          uiOutput('select.variable'),
-                          tags$hr(),
-                          strong("T-TEST PARAM OPTIONS")
-                        ),
-                        mainPanel(verbatimTextOutput('means_param_output'))
-                      )),
-             tabPanel('Non-parametric',
-                      titlePanel("Non-parametric tests for comparing means between samples"),
-                      sidebarLayout(
-                        sidebarPanel(
-                          tags$hr(),
-                          strong("Select variable"),
-                          uiOutput('select.variable'),
-                          tags$hr(),
-                          strong("T-TEST NON PARAM OPTIONS")
-                        ),
-                        mainPanel(verbatimTextOutput('means_nonparam_output'))
-                      ))),
-  navbarMenu('ANOVA',
-             tabPanel('Parametric',
-                      titlePanel("Parametric tests for analysis of variance"),
-                      sidebarLayout(
-                        sidebarPanel(
-                          tags$hr(),
-                          strong("Select variable"),
-                          uiOutput('select.variable'),
-                          tags$hr(),
-                          strong("ANOVA PARAM OPTIONS")
-                        ),
-                        mainPanel(verbatimTextOutput('anova_param_output'))
-                      )),
-             tabPanel('Non-parametric',
-                      titlePanel("Non-parametric tests for analysis of variance"),
-                      sidebarLayout(
-                        sidebarPanel(
-                          tags$hr(),
-                          strong("Select variable"),
-                          uiOutput('select.variable'),
-                          tags$hr(),
-                          strong("ANOVA NON PARAM OPTIONS")
-                        ),
-                        mainPanel(verbatimTextOutput('anova_nonparam_output'))
-                      ))),
-  tabPanel('LOD',
-           titlePanel("Limit of detection calculation"),
-           tags$hr(),
-           mainPanel(
-             strong("Limit of Detection plot"),
-             plotlyOutput('lod_plots_output'),
-             tags$hr(),
-             strong("LOD Summary"),
-             verbatimTextOutput('lod_stats_output')
-           )),
-  
-  navbarMenu('HRM',
-             tabPanel('Fluorescence Visualisation',
-                      titlePanel("qPCR Fluorescence plot visualisation"),
-                      tags$hr(),
-                      mainPanel(plotlyOutput('qpcr_plot_output'),
-                                width = 12)),
-
-             tabPanel('Labeling genotypes',
-                      titlePanel("Label and set genotypes",
-                                 tags$hr())),
-
-             tabPanel('Diff curves calculation',
-                      titlePanel('Calculate differences between HRM curves')))
+    ))
 ))
 
 
