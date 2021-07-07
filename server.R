@@ -8,6 +8,7 @@ library(shiny)
 # Define server logic 
 server <- function(input, output, session) {
     
+    # UPLOAD DATA INTO SHINY APPLICATION ---------------------------------------
     data <- reactive({
         file1 <- input$file1
         if (is.null(file1)) {
@@ -32,6 +33,12 @@ server <- function(input, output, session) {
             return(data())
         }
         
+    })
+    
+    output$contents.stats <- renderPrint({
+        req(input$file1)
+        
+        summary(data())
     })
     
     # IMPORT VARIABLE NAMES INTO SELECT INPUTS ---------------------------------
@@ -63,12 +70,14 @@ server <- function(input, output, session) {
         selectInput('select.variable.mcnp', 'Variable X', choices = names(data()))
     })
     
-    
     # PLOTS --------------------------------------------------------------------
-    output$base_plots_output <- renderPlot({
-        req(input$select.variable)
+    output$base_plots_output <- renderPlotly({
+        req(input$select.variable, input$plot.type)
         
         X <- data()[[input$select.variable]]
-        hist(X)
+        variable <- input$select.variable
+        option <- input$plot.type
+        
+        generate.plot(X, variable, option)
     })
 }
