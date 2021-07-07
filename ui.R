@@ -78,7 +78,8 @@ ui <- fluidPage(navbarPage(
                                 Boxplot = 'boxplt',
                                 Scatter = 'scatter')),
         submitButton()),
-      mainPanel(plotlyOutput('base_plots_output'))
+      mainPanel(plotlyOutput('base_plots_output'),
+                uiOutput('hist.slider'))
     )),
   
   tabPanel(
