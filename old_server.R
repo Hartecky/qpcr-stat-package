@@ -24,28 +24,6 @@ shinyServer(function(input, output) {
                       stringsAsFactors = input$string)
   })
   
-  
-  # DATA VISUALISATION MODULE ------------------------------------------------
-  output$data.variables <- renderUI({
-    selectInput('data.variables', 'Variables', 
-                as.character(unique(names(data()))))
-  })
-  
-  mydata <- reactive({
-    req(input$file1)
-    get(data())
-    
-  })
-  
-  output$plot.vis = renderPlot({
-    req(input$data.variables)
-    x <- input$data.variables
-    print(data())
-    print(mydata())
-    print(x)
-  })
-  
-  
   # Processing data for LOD calculation --------------------------------------
   # lod.data <- reactive({
   #     
