@@ -78,6 +78,15 @@ server <- function(input, output, session) {
         variable <- input$select.variable
         option <- input$plot.type
         
-        generate.plot(X, variable, option)
-    })
+        if (option == 'histogram'){
+            output$hist.slider <- renderUI({
+                sliderInput("bins",
+                            "Number of bins:",
+                            min = 1,
+                            max = 50,
+                            value = 30)
+            })
+            }
+        generate.plot(X, variable, option, input$bins)
+        })
 }
