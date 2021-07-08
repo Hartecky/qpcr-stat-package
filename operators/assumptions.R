@@ -1,7 +1,15 @@
 assumptions.testing <- function(X,Y,option){
   if (option == 'normtest'){
+    
+    stopifnot(is.numeric(X))
+    
     shapiro.test(X)
+    
   } else if (option == 'vartest'){
+    
+    stopifnot(is.factor(Y))
+    stopifnot(is.numeric(X))
+    
     bartlett.test(X, Y)
   } else if (option == 'outliers') {
     z.score <- scale(X)

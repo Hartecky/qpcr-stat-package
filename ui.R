@@ -1,6 +1,5 @@
 # AmpliStat Shiny App
 # Dashboard for statistical analysis for qPCR data
-library(tidyverse)
 library(shiny)
 library(plotly)
 library(shinythemes)
@@ -119,7 +118,9 @@ ui <- fluidPage(
         submitButton()),
       mainPanel(verbatimTextOutput('assumptions_messages'),
                 tags$hr(),
-                verbatimTextOutput('assumptions_output'))
+                verbatimTextOutput('assumptions_output'),
+                tags$hr(),
+                verbatimTextOutput('assumptions_interpret'))
       )),
   navbarMenu('Means Comparison',
              tabPanel('Parametric',

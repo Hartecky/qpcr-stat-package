@@ -71,7 +71,7 @@ server <- function(input, output, session) {
         selectInput('select.variable.mcnp', 'Variable X', choices = names(data()))
     })
     
-    # PLOTS --------------------------------------------------------------------
+    # BASE PLOTS ---------------------------------------------------------------
     output$base_plots_output <- renderPlotly({
         
         # Require selected input and specified plot type
@@ -116,6 +116,24 @@ server <- function(input, output, session) {
         Y <- data()[[input$select.variable.assum2]]
         
         assumptions.testing(X,Y, option)
+    })
+    
+    output$assumptions_interpret <- renderPrint({
+        req(input$select.variable.assum1,
+            input$select.variable.assum2,
+            input$check.assumps)
+        
+        option <- input$check.assumps
+        
+        if (option == 'normtest' || option == 'vartest'){
+            cat("Decision making:,
+        
+        p < 0.05 - Reject H0
+        p > 0.05 - Fail to reject H0")
+        } else {
+            return()
+        }
+
     })
     
     # LIMIT OF DETECTION CALCULATION -------------------------------------------
