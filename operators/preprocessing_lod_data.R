@@ -74,3 +74,17 @@ define.intervals <- function(x.lod, log.se.lod) {
   
   return(results)
 }
+
+# LOD Operations 
+lod.operations <- function(dataframe){
+  Y <- define.freq(dataframe)
+  model.glm <- fit.model(Y, dataframe)
+  level <- logit.value(alpha = 0.95)
+  X.LOD <- LOD(model.glm, level)
+  log.SE.LOD <- se.computations(model.glm, X.LOD)
+  
+  return(list(model.glm = model.glm,
+              X.LOD = X.LOD,
+              level = level,
+              log.SE.LOD = log.SE.LOD))
+}
