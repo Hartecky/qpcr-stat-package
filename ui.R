@@ -3,7 +3,8 @@
 library(tidyverse)
 library(shiny)
 library(plotly)
-library(splines)
+library(shinythemes)
+library(shinyWidgets)
 
 # HOME LINUX -------------------------------------------------------------------
 # Components scripts
@@ -20,7 +21,21 @@ library(splines)
 # source('/home/hartek/AmpliStat/plots/generate_lod_plot.R')
 # source('/home/hartek/AmpliStat/plots/fluorescence_plot.R')
 
-ui <- fluidPage(navbarPage(
+# WORK OFFICE ------------------------------------------------------------------
+# Operators
+source('/Users/Bartek/Desktop/AmpliStat/operators/configure_lod_set.R')
+source('/Users/Bartek/Desktop/AmpliStat/operators/preprocessing_lod_data.R')
+source('/Users/Bartek/Desktop/AmpliStat/operators/melt_data.R')
+source('/Users/Bartek/Desktop/AmpliStat/operators/diff_curve_calc.R')
+
+# Plots
+source('/Users/Bartek/Desktop/AmpliStat/plots/base_plot.R')
+source('/Users/Bartek/Desktop/AmpliStat/plots/fluorescence_plot.R')
+source('/Users/Bartek/Desktop/AmpliStat/plots/generate_lod_plot.R')
+
+ui <- fluidPage(
+  theme = shinytheme("flatly"),
+  navbarPage(
   'AmpliStat',
   tabPanel(
     strong('Data Upload'),
@@ -79,7 +94,8 @@ ui <- fluidPage(navbarPage(
                                 Scatter = 'scatter')),
         submitButton()),
       mainPanel(plotlyOutput('base_plots_output'),
-                uiOutput('hist.slider'))
+                uiOutput('hist.slider'),
+                width = 8)
     )),
   
   tabPanel(
@@ -94,9 +110,9 @@ ui <- fluidPage(navbarPage(
         tags$hr(),
         selectInput('check.assumps',
                     'Choose analysis',
-                    choices = c('Distribution normality',
-                                'Variance Homogenity',
-                                'Outliers Detection')),
+                    choices = c(`Distribution normality` = 'normtest',
+                                `Variance Homogenity` = 'vartest',
+                                `Outliers Detection` = 'outliers')),
         submitButton()),
       mainPanel(verbatimTextOutput('assumptions_output'))
       )),
@@ -178,7 +194,8 @@ ui <- fluidPage(navbarPage(
              plotlyOutput('lod_plots_output'),
              tags$hr(),
              strong("LOD Summary"),
-             verbatimTextOutput('lod_stats_output')
+             verbatimTextOutput('lod_stats_output'),
+             width = 12
            )),
   
   navbarMenu('HRM',
