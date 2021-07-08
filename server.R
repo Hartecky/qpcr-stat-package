@@ -106,51 +106,51 @@ server <- function(input, output, session) {
         lod.matrix <- data()
 
         # Check the dimension of the provided data
-        if(dim(lod.matrix)[1]==3 & dim(lod.matrix)[2]==3) {
-
-            # Calculate differences between total and positives samples
-            Y = define.freq(lod.matrix)
-
-            # Prepare logistic model
-            model.glm <- fit.model(Y, lod.matrix)
-
-            # Predict values at 95% significance level
-            level = logit.value(0.95)
-
-            X.LOD <- LOD(model.glm, level)
-
-            log.SE.LOD <- se.computations(model.glm,
-                                          X.LOD)
-
-            plot.labs <- prepare.set(model.glm,
-                                     X.LOD,
-                                     level)
-            
-            pred.data <- plot.labs$pred.df
-            top.interval <- plot.labs$top.interval
-            bottom.interval <- plot.labs$bottom.interval
-
-            # Return calculation results into DataFrame
-            lod.data = list(pred.data = pred.data,
-                            top.interval = top.interval,
-                            bottom.interval = bottom.interval,
-                            x.lod = X.LOD,
-                            significance = 0.95,
-                            logit.value = level,
-                            se.lod = log.SE.LOD)
-        } else {
-            # If data is not a 3x3 matrix with specified column
-            # names, then stop running this function and return
-            # warning info
-            stop("Data provided for LOD calculation is incorrect. Exit code with status 1.
-            
-                 Example data for LOD calculation:
+        names.list <- c('dilution', 'total', 'positive')
+        if (names(lod.matrix) == names.list){
+            if(dim(lod.matrix)[1]==3 & dim(lod.matrix)[2]==3) {
+                
+                # Calculate differences between total and positives samples
+                Y = define.freq(lod.matrix)
+                
+                # Prepare logistic model
+                model.glm <- fit.model(Y, lod.matrix)
+                
+                # Predict values at 95% significance level
+                level = logit.value(0.95)
+                
+                X.LOD <- LOD(model.glm, level)
+                
+                log.SE.LOD <- se.computations(model.glm,
+                                              X.LOD)
+                
+                plot.labs <- prepare.set(model.glm,
+                                         X.LOD,
+                                         level)
+                
+                pred.data <- plot.labs$pred.df
+                top.interval <- plot.labs$top.interval
+                bottom.interval <- plot.labs$bottom.interval
+                
+                # Return calculation results into DataFrame
+                lod.data = list(pred.data = pred.data,
+                                top.interval = top.interval,
+                                bottom.interval = bottom.interval,
+                                x.lod = X.LOD,
+                                significance = 0.95,
+                                logit.value = level,
+                                se.lod = log.SE.LOD)
+            } else {
+            stop('Data provided for LOD calculation is incorrect. 
+                Exit code with status 1. 
+                
+                Provided data is not a 3x3 matrix')}
+            } else { 
+            stop('Data provided for LOD calculation is incorrect. 
+                 Exit code with status 1.
                  
-                 dilution;total;positive
-                 6;8;4
-                 12;8;8
-                 24;8;8")
-        }
+                 Provided data does not have proper column names
+                 (dilution, total, positive')}
     })
     
     # LIMIT OD DETECTION PLOT --------------------------------------------------
