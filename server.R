@@ -47,12 +47,12 @@ server <- function(input, output, session) {
         selectInput('select.variable', 'Variable X', choices = names(data()))
     })
     
-    output$select.variable.assum <- renderUI({
-        selectInput('select.variable.assum', 'Variable X', choices = names(data()))
+    output$select.variable.assum1 <- renderUI({
+        selectInput('select.variable.assum1', 'Variable X', choices = names(data()))
     })
     
-    output$select.variable.assum <- renderUI({
-        selectInput('select.variable.assum', 'Variable X', choices = names(data()))
+    output$select.variable.assum2 <- renderUI({
+        selectInput('select.variable.assum2', 'Variable Y', choices = names(data()))
     })
     
     output$select.variable.mcp <- renderUI({
@@ -97,6 +97,26 @@ server <- function(input, output, session) {
         
         generate.plot(X, variable, option, input$bins)
         })
+    
+    # TESTING ASSUMPTIONS ------------------------------------------------------
+    output$assumptions_messages <- renderPrint({
+        req(input$check.assumps, input$select.variable.assum1)
+        var <- input$select.variable.assum1
+        option <- input$check.assumps
+        assumptions.messages(option, var)
+    })
+    
+    output$assumptions_output <- renderPrint({
+        req(input$select.variable.assum1, 
+            input$select.variable.assum2,
+            input$check.assumps)
+        
+        option <- input$check.assumps
+        X <- data()[[input$select.variable.assum1]]
+        Y <- data()[[input$select.variable.assum2]]
+        
+        assumptions.testing(X,Y, option)
+    })
     
     # LIMIT OF DETECTION CALCULATION -------------------------------------------
     lod.data <- reactive({
@@ -150,7 +170,7 @@ server <- function(input, output, session) {
                  Exit code with status 1.
                  
                  Provided data does not have proper column names
-                 (dilution, total, positive')}
+                 (dilution, total, positive)')}
     })
     
     # LIMIT OD DETECTION PLOT --------------------------------------------------
