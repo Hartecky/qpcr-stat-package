@@ -23,7 +23,7 @@ server <- function(input, output, session) {
         )
     })
     
-    # RENDER DATATABLE AND SUMMARY STATISTICS FOR GIVEN DATA -------------------
+    # RENDER DATATABLE FOR GIVEN DATA ------------------------------------------
     output$contents <- renderDataTable({
         req(input$file1)
         
@@ -36,6 +36,7 @@ server <- function(input, output, session) {
         
     })
     
+    # RENDER DATA SUMMARY ------------------------------------------------------
     output$contents.stats <- renderPrint({
         req(input$file1)
         
@@ -98,7 +99,7 @@ server <- function(input, output, session) {
         generate.plot(X, variable, option, input$bins)
         })
     
-    # TESTING ASSUMPTIONS ------------------------------------------------------
+    # ASSUMPTION MESSAGES ------------------------------------------------------
     output$assumptions_messages <- renderPrint({
         req(input$check.assumps, input$select.variable.assum1)
         var <- input$select.variable.assum1
@@ -106,6 +107,7 @@ server <- function(input, output, session) {
         assumptions.messages(option, var)
     })
     
+    # ASSUMPTIONS TESTING ------------------------------------------------------
     output$assumptions_output <- renderPrint({
         req(input$select.variable.assum1, 
             input$select.variable.assum2,
@@ -118,6 +120,7 @@ server <- function(input, output, session) {
         assumptions.testing(X,Y, option)
     })
     
+    # ASSUMPS TESTS P-VALUE INTERPRET MESSAGE ----------------------------------
     output$assumptions_interpret <- renderPrint({
         req(input$select.variable.assum1,
             input$select.variable.assum2,
@@ -132,8 +135,7 @@ server <- function(input, output, session) {
         p > 0.05 - Fail to reject H0")
         } else {
             return()
-        }
-
+        }  
     })
     
     # LIMIT OF DETECTION CALCULATION -------------------------------------------
@@ -148,36 +150,24 @@ server <- function(input, output, session) {
         if (names(lod.matrix) == names.list){
             if(dim(lod.matrix)[1]==3 & dim(lod.matrix)[2]==3) {
                 
-                # Calculate differences between total and positives samples
-                Y = define.freq(lod.matrix)
+                lod <- lod.operations(lod.matrix)
                 
-                # Prepare logistic model
-                model.glm <- fit.model(Y, lod.matrix)
-                
-                # Predict values at 95% significance level
-                level = logit.value(0.95)
-                
-                X.LOD <- LOD(model.glm, level)
-                
-                log.SE.LOD <- se.computations(model.glm,
-                                              X.LOD)
-                
-                plot.labs <- prepare.set(model.glm,
-                                         X.LOD,
-                                         level)
-                
+                plot.labs <- prepare.set(lod$model.glm,
+                                         lod$X.LOD,
+                                         lod$level)
+
                 pred.data <- plot.labs$pred.df
                 top.interval <- plot.labs$top.interval
                 bottom.interval <- plot.labs$bottom.interval
-                
+
                 # Return calculation results into DataFrame
                 lod.data = list(pred.data = pred.data,
                                 top.interval = top.interval,
                                 bottom.interval = bottom.interval,
-                                x.lod = X.LOD,
+                                x.lod = lod$X.LOD,
                                 significance = 0.95,
-                                logit.value = level,
-                                se.lod = log.SE.LOD)
+                                logit.value = lod$level,
+                                se.lod = lod$log.SE.LOD)
             } else {
             stop('Data provided for LOD calculation is incorrect. 
                 Exit code with status 1. 
