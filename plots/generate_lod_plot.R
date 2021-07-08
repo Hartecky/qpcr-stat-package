@@ -18,7 +18,7 @@ lod.plot <- function(data, pred.data, top.interval, bottom.interval, X.LOD){
                   label = round(X.LOD, digits = 2))) +
     
     ylim(c(0,1)) +
-    xlim(c(1,24)) +
+    xlim(c(-5,24)) +
     
     ggtitle("Positive results obtained in the Real Time PCR reaction") +
     ylab("Percentage of positive results") +
