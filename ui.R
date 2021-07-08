@@ -5,7 +5,7 @@ library(shiny)
 library(plotly)
 library(shinythemes)
 library(shinyWidgets)
-
+library(outliers)
 # HOME LINUX -------------------------------------------------------------------
 # Components scripts
 # source('/home/hartek/AmpliStat/components/ui_data_upload.R')
@@ -22,19 +22,20 @@ library(shinyWidgets)
 # source('/home/hartek/AmpliStat/plots/fluorescence_plot.R')
 
 # WORK OFFICE ------------------------------------------------------------------
-# Operators
+# OPERATORS FUNCTIONS
 source('/Users/Bartek/Desktop/AmpliStat/operators/configure_lod_set.R')
 source('/Users/Bartek/Desktop/AmpliStat/operators/preprocessing_lod_data.R')
 source('/Users/Bartek/Desktop/AmpliStat/operators/melt_data.R')
 source('/Users/Bartek/Desktop/AmpliStat/operators/diff_curve_calc.R')
+source('/Users/Bartek/Desktop/AmpliStat/operators/assumptions.R')
 
-# Plots
+# PLOTTING FUNCTIONS
 source('/Users/Bartek/Desktop/AmpliStat/plots/base_plot.R')
 source('/Users/Bartek/Desktop/AmpliStat/plots/fluorescence_plot.R')
 source('/Users/Bartek/Desktop/AmpliStat/plots/generate_lod_plot.R')
 
 ui <- fluidPage(
-  theme = shinytheme("flatly"),
+  theme = shinytheme("darkly"),
   navbarPage(
   'AmpliStat',
   tabPanel(
@@ -106,7 +107,9 @@ ui <- fluidPage(
       sidebarPanel(
         strong("Select variable"),
         tags$hr(),
-        uiOutput('select.variable.assum'),
+        uiOutput('select.variable.assum1'),
+        tags$hr(),
+        uiOutput('select.variable.assum2'),
         tags$hr(),
         selectInput('check.assumps',
                     'Choose analysis',
@@ -114,7 +117,9 @@ ui <- fluidPage(
                                 `Variance Homogenity` = 'vartest',
                                 `Outliers Detection` = 'outliers')),
         submitButton()),
-      mainPanel(verbatimTextOutput('assumptions_output'))
+      mainPanel(verbatimTextOutput('assumptions_messages'),
+                tags$hr(),
+                verbatimTextOutput('assumptions_output'))
       )),
   navbarMenu('Means Comparison',
              tabPanel('Parametric',
