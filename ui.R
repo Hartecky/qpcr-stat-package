@@ -1,16 +1,15 @@
 # AmpliStat Shiny App
 # Dashboard for statistical analysis for qPCR data
+
 library(shiny)
+library(ggplot2)
 library(plotly)
 library(shinythemes)
 library(shinyWidgets)
 library(outliers)
+library(reshape2)
+
 # HOME LINUX -------------------------------------------------------------------
-# Components scripts
-# source('/home/hartek/AmpliStat/components/ui_data_upload.R')
-# source('/home/hartek/AmpliStat/components/ui_lod_plot.R')
-# source('/home/hartek/AmpliStat/components/ui_fluorescence_plot.R')
-# 
 # # Operators scripts
 # source('/home/hartek/AmpliStat/operators/configure_lod_set.R')
 # source('/home/hartek/AmpliStat/operators/preprocessing_lod_data.R')

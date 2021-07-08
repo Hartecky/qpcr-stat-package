@@ -3,6 +3,14 @@
 # and logit model to calculate limit of detection of
 # qPCR reaction and plot it with significance of 95%
 
+# LOD (Limit of detection) calculation script includes:
+# 1. Dataframe preparation
+# 2. Logistic regression model
+# 3. Calculating logit value based on significance level
+# 4. Calculating limit of detection (LOD) value
+# 5. Calculating confidence intervals
+
+# Matrix with difference between total and positive samples
 define.freq <- function(dataframe) {
   attach(dataframe)
   total.diff <- total - positive
@@ -13,7 +21,6 @@ define.freq <- function(dataframe) {
   detach(dataframe)
   return(Y)
 }
-
 
 # Logistic regression model
 fit.model <- function(Y, data) {
@@ -37,7 +44,7 @@ LOD <- function(mod, log.val) {
 }
 
 
-# Calculates LOD value of a model and LOD
+# Calculates se values for LOD
 se.computations <- function(model, xlod) {
   
   co <- model$coef

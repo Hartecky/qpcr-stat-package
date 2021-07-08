@@ -1,3 +1,9 @@
+# Calculates differences between normalized fluorescence curves
+# based on provided reference curve which is chosen arbitrarily
+# 
+# Returns reordered dataframe with calculated differences
+
+
 diff.calc <- function(dataframe, ref_index){
   left_index = ref_index - 1
   right_index = ref_index + 1

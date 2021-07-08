@@ -1,6 +1,3 @@
-library(ggplot2)
-library(plotly)
-library(shiny)
 
 # Function generating histogram plot
 hist.plot <- function(x, bins){

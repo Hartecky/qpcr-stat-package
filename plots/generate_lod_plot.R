@@ -1,3 +1,7 @@
+# Function generating visualization of Limit of Detection (LOD)
+# predicted values based on logit model with highlighted values 
+# of top and bottom interval and with marked LOD value on plot
+
 lod.plot <- function(data, pred.data, top.interval, bottom.interval, X.LOD){
   
   dil <- 10^seq(-1,1,0.01)
