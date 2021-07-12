@@ -45,12 +45,12 @@ server <- function(input, output, session) {
     
     # IMPORT VARIABLE NAMES INTO SELECT INPUTS ---------------------------------
     
-    # DATA VISUALISATION
+    # DATA VISUALISATION ---------------------
     output$select.variable <- renderUI({
         selectInput('select.variable', 'Variable X', choices = names(data()))
     })
     
-    # ASSUMPTIONS TESTING
+    # ASSUMPTIONS TESTING --------------------
     output$select.variable.assum1 <- renderUI({
         selectInput('select.variable.assum1', 'Variable X', choices = names(data()))
     })
@@ -59,7 +59,7 @@ server <- function(input, output, session) {
         selectInput('select.variable.assum2', 'Variable Y', choices = names(data()))
     })
     
-    # MEANS COMPARISON
+    # MEANS COMPARISON ----------------------
     output$select.variable.mcp1 <- renderUI({
         selectInput('select.variable.mcp1', 'Variable X', choices = names(data()))
     })
@@ -76,7 +76,7 @@ server <- function(input, output, session) {
         selectInput('select.variable.mcnp2', 'Variable Y', choices = names(data()))
     })
     
-    # ANOVA
+    # ANOVA ----------------------------------
     output$select.variable.aovp1 <- renderUI({
         selectInput('select.variable.aovp1', 'Variable X', choices = names(data()))
     })
@@ -158,6 +158,51 @@ server <- function(input, output, session) {
             return()
         }  
     }) 
+    
+    # PARAMETRIC MEANS COMPARISON ----------------------------------------------
+    
+    output$means_param_output <- renderPrint({
+        req(input$t.test.type,
+            input$select.variable.mcp1,
+            input$select.variable.mcp2,
+            input$mu,
+            input$alternative_ttest_p,
+            input$alpha_testt,
+            input$par)
+        
+        option <- input$t.test.type
+        alt <- input$alternative_ttest_p
+        alpha <- input$alpha_testt
+        mu <- input$mu
+        pair <- input$par_ttest
+        
+        X <- data()[[input$select.variable.mcp1]]
+        Y <- data()[[input$select.variable.mcp2]]
+        
+        
+        if (option == 'onesample'){
+            t.test(x = X, 
+                   y = NULL, 
+                   alternative = alt, 
+                   mu = mu, 
+                   paired = F, 
+                   conf.level = alpha)
+        } else if (option == 'twosamples'){
+            if (pair == 'Paired'){
+                t.test(x = X, 
+                       y = Y, 
+                       alternative = alt, 
+                       paired = T, 
+                       conf.level = alpha)
+            } else if (pair == "Non-paired") {
+                t.test(x = X, 
+                       y = Y, 
+                       alternative = alt, 
+                       paired = F, 
+                       conf.level = alpha)
+            }
+        }
+    })
     
     # LIMIT OF DETECTION CALCULATION -------------------------------------------
     lod.data <- reactive({
