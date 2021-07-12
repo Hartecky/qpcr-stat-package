@@ -44,10 +44,13 @@ server <- function(input, output, session) {
     })
     
     # IMPORT VARIABLE NAMES INTO SELECT INPUTS ---------------------------------
+    
+    # DATA VISUALISATION
     output$select.variable <- renderUI({
         selectInput('select.variable', 'Variable X', choices = names(data()))
     })
     
+    # ASSUMPTIONS TESTING
     output$select.variable.assum1 <- renderUI({
         selectInput('select.variable.assum1', 'Variable X', choices = names(data()))
     })
@@ -56,22 +59,40 @@ server <- function(input, output, session) {
         selectInput('select.variable.assum2', 'Variable Y', choices = names(data()))
     })
     
-    output$select.variable.mcp <- renderUI({
-        selectInput('select.variable.mcp', 'Variable X', choices = names(data()))
+    # MEANS COMPARISON
+    output$select.variable.mcp1 <- renderUI({
+        selectInput('select.variable.mcp1', 'Variable X', choices = names(data()))
     })
     
-    output$select.variable.mcnp <- renderUI({
-        selectInput('select.variable.mcnp', 'Variable X', choices = names(data()))
+    output$select.variable.mcp2 <- renderUI({
+        selectInput('select.variable.mcp2', 'Variable Y', choices = names(data()))
     })
     
-    output$select.variable.aovp <- renderUI({
-        selectInput('select.variable.mcnp', 'Variable X', choices = names(data()))
+    output$select.variable.mcnp1 <- renderUI({
+        selectInput('select.variable.mcnp1', 'Variable X', choices = names(data()))
     })
     
-    output$select.variable.aovnp <- renderUI({
-        selectInput('select.variable.mcnp', 'Variable X', choices = names(data()))
+    output$select.variable.mcnp2 <- renderUI({
+        selectInput('select.variable.mcnp2', 'Variable Y', choices = names(data()))
     })
     
+    # ANOVA
+    output$select.variable.aovp1 <- renderUI({
+        selectInput('select.variable.aovp1', 'Variable X', choices = names(data()))
+    })
+    
+    output$select.variable.aovp2 <- renderUI({
+        selectInput('select.variable.aovp2', 'Variable Y', choices = names(data()))
+    })
+    
+    output$select.variable.aovnp1 <- renderUI({
+        selectInput('select.variable.aovnp1', 'Variable X', choices = names(data()))
+    })
+    
+    output$select.variable.aovnp2 <- renderUI({
+        selectInput('select.variable.aovnp2', 'Variable Y', choices = names(data()))
+    })
+
     # BASE PLOTS ---------------------------------------------------------------
     output$base_plots_output <- renderPlotly({
         
@@ -136,7 +157,7 @@ server <- function(input, output, session) {
         } else {
             return()
         }  
-    })
+    }) 
     
     # LIMIT OF DETECTION CALCULATION -------------------------------------------
     lod.data <- reactive({
