@@ -1,26 +1,20 @@
-# AmpliStat Shiny App
-# Dashboard for statistical analysis for qPCR data
+# ------------------------------------------------------------------------------
+# AMPLISTAT SHINY APP
+# DASHBOARD FOR STATISTICAL ANALYSIS OF QPCR DATA
+# USER INTERFACE COMPONENTS
+# ------------------------------------------------------------------------------
 
-library(shiny)
-library(ggplot2)
-library(plotly)
-library(shinythemes)
-library(shinyWidgets)
-library(outliers)
-library(reshape2)
-
-# HOME LINUX -------------------------------------------------------------------
-# # Operators scripts
+# HOME LINUX SOURCE FILES ------------------------------------------------------
+# OPERATORS FUNCTIONS
 # source('/home/hartek/AmpliStat/operators/configure_lod_set.R')
 # source('/home/hartek/AmpliStat/operators/preprocessing_lod_data.R')
 # source('/home/hartek/AmpliStat/operators/melt_data.R')
 # 
-# # Plots
+# PLOTTING FUNCTIONS
 # source('/home/hartek/AmpliStat/plots/generate_lod_plot.R')
 # source('/home/hartek/AmpliStat/plots/fluorescence_plot.R')
 
-# WORK OFFICE ------------------------------------------------------------------
-# OPERATORS FUNCTIONS
+# WORK OFFICE SOURCE FILES -----------------------------------------------------
 source('/Users/Bartek/Desktop/AmpliStat/operators/configure_lod_set.R')
 source('/Users/Bartek/Desktop/AmpliStat/operators/preprocessing_lod_data.R')
 source('/Users/Bartek/Desktop/AmpliStat/operators/melt_data.R')
@@ -32,10 +26,13 @@ source('/Users/Bartek/Desktop/AmpliStat/plots/base_plot.R')
 source('/Users/Bartek/Desktop/AmpliStat/plots/fluorescence_plot.R')
 source('/Users/Bartek/Desktop/AmpliStat/plots/generate_lod_plot.R')
 
+# UI FOR WHOLE APPLICATION -----------------------------------------------------
 ui <- fluidPage(
   theme = shinytheme("darkly"),
   navbarPage(
   'AmpliStat',
+  
+  # DATA UPLOAD UI PANEL -------------------------------------------------------
   tabPanel(
     strong('Data Upload'),
     titlePanel('Uploading Files'),
@@ -74,8 +71,10 @@ ui <- fluidPage(
         submitButton("Update view", icon("refresh"))),
       
       mainPanel(dataTableOutput("contents"),
-                verbatimTextOutput('contents.stats')))),
+                verbatimTextOutput('contents.stats'),
+                width = 8))),
   
+  # DATA VISUALISATION PANEL ---------------------------------------------------
   tabPanel(
     'Data Visualisation', 
     titlePanel("Data Visualisation Panel"),
@@ -97,6 +96,7 @@ ui <- fluidPage(
                 width = 8)
     )),
   
+  # ASSUMPTIONS TESTING PANEL --------------------------------------------------
   tabPanel(
     'Assumptions',
     titlePanel("Check assumptions panel"),
@@ -121,7 +121,11 @@ ui <- fluidPage(
                 tags$hr(),
                 verbatimTextOutput('assumptions_interpret'))
       )),
+  
+  # MEANS COMPARISON MENU ------------------------------------------------------
   navbarMenu('Means Comparison',
+             
+             # PARAMETRIC TESTS ------------------------------------------------
              tabPanel('Parametric',
                       titlePanel("Parametric tests for comparing means between samples"),
                       sidebarLayout(
@@ -156,6 +160,8 @@ ui <- fluidPage(
                         
                         mainPanel(verbatimTextOutput('means_param_output'))
                       )),
+             
+             # NON-PARAMETRIC TESTS --------------------------------------------
              tabPanel('Non-parametric',
                       titlePanel("Non-parametric tests for comparing means between samples"),
                       sidebarLayout(
@@ -163,24 +169,25 @@ ui <- fluidPage(
                           strong('Choose test type'),
                           selectInput('mcnp.test.type',
                                       'Test type',
-                                      choices = c("One sample",
-                                                  "Two samples")),
+                                      choices = c(`One Sample` = "onesample",
+                                                  `Two Samples` = "twosamples")),
                           tags$hr(),
                           strong("Select variable"),
                           uiOutput('select.variable.mcnp1'),
                           uiOutput('select.variable.mcnp2'),
                           tags$hr(),
-                          strong("T-TEST NON PARAM OPTIONS"),
-                          selectInput('par', 
+                          strong("T-TEST NON-PARAM OPTIONS"),
+                          numericInput('mu_np', 'm0 (only for one sample test)', 0),
+                          selectInput('par_wilcox', 
                                       'Paired',
-                                      choices = c("Paired",
-                                                  "Non-paired")),
-                          selectInput('alternative_ttest_np',
+                                      choices = c(Paired = 'Paired',
+                                                  `Non-paired` = 'Non-paired')),
+                          selectInput('alternative_wilcox',
                                       'Alternative',
                                       choices = c(Less = "greater",
                                                   Greater = "less",
                                                   `Two Sided` = "two.sided")),
-                          numericInput('alphatwo',
+                          numericInput('alpha_wilcox',
                                        'Significance level',
                                        value = 0.05,
                                        step = 0.01),
@@ -188,7 +195,11 @@ ui <- fluidPage(
                         ),
                         mainPanel(verbatimTextOutput('means_nonparam_output'))
                       ))),
+  
+  # ANALYSIS OF VARIANCE PANEL -------------------------------------------------
   navbarMenu('ANOVA',
+             
+             # PARAMETRIC TESTS ------------------------------------------------
              tabPanel('Parametric',
                       titlePanel("Parametric tests for analysis of variance"),
                       sidebarLayout(
@@ -207,6 +218,8 @@ ui <- fluidPage(
                         ),
                         mainPanel(verbatimTextOutput('anova_param_output'))
                       )),
+             
+             # NON-PARAMETRIC TESTS --------------------------------------------
              tabPanel('Non-parametric',
                       titlePanel("Non-parametric tests for analysis of variance"),
                       sidebarLayout(
@@ -225,6 +238,8 @@ ui <- fluidPage(
                         ),
                         mainPanel(verbatimTextOutput('anova_nonparam_output'))
                       ))),
+  
+  # LIMIT OF DETECTION PANEL ---------------------------------------------------
   tabPanel('LOD',
            titlePanel("Limit of detection calculation"),
            tags$hr(),
@@ -237,17 +252,22 @@ ui <- fluidPage(
              width = 12
            )),
   
+  # HIGH RESOLUTION MELT MENU --------------------------------------------------
   navbarMenu('HRM',
+             
+             # MELTING CURVES VISUALISATION ------------------------------------
              tabPanel('Fluorescence Visualisation',
                       titlePanel("qPCR Fluorescence plot visualisation"),
                       tags$hr(),
                       mainPanel(plotlyOutput('qpcr_plot_output'),
                                 width = 12)),
              
+             # LABELING GENOTYPES PANEL ----------------------------------------
              tabPanel('Labeling genotypes',
                       titlePanel("Label and set genotypes"),
                       tags$hr()),
              
+             # DIFFERENCE PLOTS CALCULATION ------------------------------------
              tabPanel('Diff curves calculation',
                       titlePanel('Calculate differences between HRM curves'),
                       tags$hr()))

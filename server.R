@@ -1,11 +1,10 @@
-# AmpliStat Shiny App 
-#
-# This is the server logic of a Shiny web application. You can run the
-# application by clicking 'Run App' above.
+# ------------------------------------------------------------------------------
+# AMPLISTAT SHINY APP
+# DASHBOARD FOR STATISTICAL ANALYSIS OF QPCR DATA
+# SERVER FUNCTIONALITY
+# ------------------------------------------------------------------------------
 
-library(shiny)
-
-# Define server logic 
+# SERVER LOGIC DEFINITION ------------------------------------------------------
 server <- function(input, output, session) {
     
     # UPLOAD DATA INTO SHINY APPLICATION ---------------------------------------
@@ -25,6 +24,7 @@ server <- function(input, output, session) {
     
     # RENDER DATATABLE FOR GIVEN DATA ------------------------------------------
     output$contents <- renderDataTable({
+        # Require input file
         req(input$file1)
         
         if (input$disp == "head") {
@@ -33,18 +33,17 @@ server <- function(input, output, session) {
         else {
             return(data())
         }
-        
     })
     
     # RENDER DATA SUMMARY ------------------------------------------------------
     output$contents.stats <- renderPrint({
+        # Require input file
         req(input$file1)
         
         summary(data())
     })
     
     # IMPORT VARIABLE NAMES INTO SELECT INPUTS ---------------------------------
-    
     # DATA VISUALISATION ---------------------
     output$select.variable <- renderUI({
         selectInput('select.variable', 'Variable X', choices = names(data()))
@@ -103,6 +102,7 @@ server <- function(input, output, session) {
         variable <- input$select.variable
         option <- input$plot.type
         
+        # Render slider input if chosen plot type is histogram
         if (option == 'histogram'){
             output$hist.slider <- renderUI({
                 sliderInput("bins",
@@ -117,12 +117,16 @@ server <- function(input, output, session) {
                 output$hist.slider <- renderUI({ })
             }
         
+        # Generating plots
         generate.plot(X, variable, option, input$bins)
         })
     
     # ASSUMPTION MESSAGES ------------------------------------------------------
     output$assumptions_messages <- renderPrint({
-        req(input$check.assumps, input$select.variable.assum1)
+        # Require option and variables
+        req(input$check.assumps, 
+            input$select.variable.assum1)
+        
         var <- input$select.variable.assum1
         option <- input$check.assumps
         assumptions.messages(option, var)
@@ -160,15 +164,14 @@ server <- function(input, output, session) {
     }) 
     
     # PARAMETRIC MEANS COMPARISON ----------------------------------------------
-    
     output$means_param_output <- renderPrint({
         req(input$t.test.type,
             input$select.variable.mcp1,
             input$select.variable.mcp2,
             input$mu,
+            input$par,
             input$alternative_ttest_p,
-            input$alpha_testt,
-            input$par)
+            input$alpha_testt)
         
         option <- input$t.test.type
         alt <- input$alternative_ttest_p
@@ -202,6 +205,50 @@ server <- function(input, output, session) {
                        conf.level = alpha)
             }
         }
+    })
+    
+    # NON-PARAMETRIC MEANS COMPARISON ------------------------------------------
+    output$means_nonparam_output <- renderPrint({
+        req(input$mcnp.test.type,
+            input$select.variable.mcnp1,
+            input$select.variable.mcnp2,
+            input$mu_np,
+            input$par_wilcox,
+            input$alternative_wilcox,
+            input$alpha_wilcox)
+        
+        option <- input$mcnp.test.type
+        alt <- input$alternative_wilcox
+        alpha <- input$alpha_wilcox
+        mu <- input$alpha_wilcox
+        pair <- input$par_wilcox
+        
+        X <- data()[[input$select.variable.mcnp1]]
+        Y <- data()[[input$select.variable.mcnp2]]
+        
+        if (option == 'onesample'){
+            wilcox.test(x = X, 
+                        y = NULL, 
+                        alternative = alt, 
+                        mu = mu, 
+                        paired = F, 
+                        conf.level = alpha)
+        } else if (option == 'twosamples') {
+            if (pair == 'Paired'){
+                wilcox.test(x = X, 
+                            y = Y, 
+                            alternative = alt, 
+                            paired = T, 
+                            conf.level = alpha)
+            } else if (option == 'Non-paired') {
+                wilcox.test(x = X, 
+                            y = Y, 
+                            alternative = alt, 
+                            paired = F, 
+                            conf.level = alpha)
+            }
+        }
+        
     })
     
     # LIMIT OF DETECTION CALCULATION -------------------------------------------
