@@ -142,7 +142,9 @@ ui <- fluidPage(
                           tags$hr(),
                           strong("T-TEST PARAM OPTIONS"),
                           
-                          numericInput('mu', 'm0 (only for one sample test)', 0),
+                          numericInput('mu', 'Mean to compare with', 0),
+                          helpText("Choose this option when comparing one sample"),
+                          
                           selectInput('par_ttest', 
                                       'Paired',
                                       choices = c(Paired = 'Paired',
@@ -177,7 +179,10 @@ ui <- fluidPage(
                           uiOutput('select.variable.mcnp2'),
                           tags$hr(),
                           strong("T-TEST NON-PARAM OPTIONS"),
-                          numericInput('mu_np', 'm0 (only for one sample test)', 0),
+                          
+                          numericInput('mu_np', 'Mean to compare with', 0),
+                          helpText("Choose this option when comparing one sample"),
+                          
                           selectInput('par_wilcox', 
                                       'Paired',
                                       choices = c(Paired = 'Paired',
@@ -211,8 +216,10 @@ ui <- fluidPage(
                                                   "Two samples")),
                           tags$hr(),
                           strong("Select variable"),
+                          
                           uiOutput('select.variable.aovp1'),
                           uiOutput('select.variable.aovp2'),
+                          
                           tags$hr(),
                           strong("ANOVA PARAM OPTIONS")
                         ),
