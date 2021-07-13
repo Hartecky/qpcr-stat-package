@@ -4,6 +4,14 @@
 # USER INTERFACE COMPONENTS
 # ------------------------------------------------------------------------------
 
+library(tidyverse)
+library(shiny)
+library(plotly)
+library(splines)
+library(shinythemes)
+library(shinyWidgets)
+library(reshape2)
+
 # HOME LINUX SOURCE FILES ------------------------------------------------------
 # OPERATORS FUNCTIONS
 # source('/home/hartek/AmpliStat/operators/configure_lod_set.R')
@@ -130,20 +138,18 @@ ui <- fluidPage(
                       titlePanel("Parametric tests for comparing means between samples"),
                       sidebarLayout(
                         sidebarPanel(
-                          strong("Choose T-test type"),
                           selectInput('t.test.type',
                                       'T-test type',
                                       choices = c(`One Sample` = "onesample",
                                                   `Two Samples` = "twosamples")),
                           tags$hr(),
-                          strong("Select variable"),
+                          helpText("Select variable"),
                           uiOutput('select.variable.mcp1'),
                           uiOutput('select.variable.mcp2'),
                           tags$hr(),
                           strong("T-TEST PARAM OPTIONS"),
-                          
+                          helpText("Choose option below when comparing one sample"),
                           numericInput('mu', 'Mean to compare with', 0),
-                          helpText("Choose this option when comparing one sample"),
                           
                           selectInput('par_ttest', 
                                       'Paired',
@@ -158,7 +164,7 @@ ui <- fluidPage(
                                        'Significance level',
                                        value = 0.05,
                                        step = 0.01),
-                          submitButton(),),
+                          submitButton()),
                         
                         mainPanel(verbatimTextOutput('means_param_output'))
                       )),
@@ -168,21 +174,20 @@ ui <- fluidPage(
                       titlePanel("Non-parametric tests for comparing means between samples"),
                       sidebarLayout(
                         sidebarPanel(
-                          strong('Choose test type'),
                           selectInput('mcnp.test.type',
                                       'Test type',
                                       choices = c(`One Sample` = "onesample",
                                                   `Two Samples` = "twosamples")),
                           tags$hr(),
-                          strong("Select variable"),
+
                           uiOutput('select.variable.mcnp1'),
                           uiOutput('select.variable.mcnp2'),
                           tags$hr(),
+                          
                           strong("T-TEST NON-PARAM OPTIONS"),
-                          
+                          helpText("Choose option below when comparing one sample"),
                           numericInput('mu_np', 'Mean to compare with', 0),
-                          helpText("Choose this option when comparing one sample"),
-                          
+                         
                           selectInput('par_wilcox', 
                                       'Paired',
                                       choices = c(Paired = 'Paired',
@@ -209,21 +214,19 @@ ui <- fluidPage(
                       titlePanel("Parametric tests for analysis of variance"),
                       sidebarLayout(
                         sidebarPanel(
-                          strong("Choose test type"),
-                          selectInput('aovp.test.type',
-                                      'Test type',
-                                      choices = c("One sample",
-                                                  "Two samples")),
+                          strong("ANOVA test"),
                           tags$hr(),
-                          strong("Select variable"),
-                          
+
+                          helpText("Categorical X variable"),
                           uiOutput('select.variable.aovp1'),
+                          
+                          helpText("Dependent Y variable"),
                           uiOutput('select.variable.aovp2'),
                           
                           tags$hr(),
-                          strong("ANOVA PARAM OPTIONS")
+                          submitButton()
                         ),
-                        mainPanel(verbatimTextOutput('anova_param_output'))
+                        mainPanel(verbatimTextOutput('anova_param_output'), width = 8)
                       )),
              
              # NON-PARAMETRIC TESTS --------------------------------------------
@@ -231,17 +234,21 @@ ui <- fluidPage(
                       titlePanel("Non-parametric tests for analysis of variance"),
                       sidebarLayout(
                         sidebarPanel(
-                          strong("Choose test type"),
+
                           selectInput('aovnp.test.type',
                                       'Test type',
                                       choices = c("One sample",
                                                   "Two samples")),
                           tags$hr(),
-                          strong("Select variable"),
+                          helpText("Categorical X1 variable"),
                           uiOutput('select.variable.aovnp1'),
+                          helpText("Categorical X2 variable"),
                           uiOutput('select.variable.aovnp2'),
+                          helpText("Independent Y variable"),
+                          uiOutput('select.variable.aovnp3'),
+                          
                           tags$hr(),
-                          strong("ANOVA NON PARAM OPTIONS")
+                          submitButton()
                         ),
                         mainPanel(verbatimTextOutput('anova_nonparam_output'))
                       ))),

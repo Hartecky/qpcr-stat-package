@@ -85,11 +85,15 @@ server <- function(input, output, session) {
     })
     
     output$select.variable.aovnp1 <- renderUI({
-        selectInput('select.variable.aovnp1', 'Variable X', choices = names(data()))
+        selectInput('select.variable.aovnp1', 'Variable X1', choices = names(data()))
     })
     
     output$select.variable.aovnp2 <- renderUI({
-        selectInput('select.variable.aovnp2', 'Variable Y', choices = names(data()))
+        selectInput('select.variable.aovnp2', 'Variable X2', choices = names(data()))
+    })
+    
+    output$select.variable.aovnp3 <- renderUI({
+        selectInput('select.variable.aovnp3', 'Variable Y', choices = names(data()))
     })
 
     # BASE PLOTS ---------------------------------------------------------------
@@ -251,6 +255,21 @@ server <- function(input, output, session) {
         
     })
     
+    # PARAMETRIC ANALYSIS OF VARIANCE ------------------------------------------
+    output$anova_param_output <- renderPrint({
+        req(input$select.variable.aovp1,
+            input$select.variable.aovp2)
+        
+        X <- data()[[input$select.variable.aovp1]]
+        Y <- data()[[input$select.variable.aovp2]]
+        stopifnot(is.factor(X), is.numeric(Y))
+        
+        fit <- aov(Y ~ X, data = data())
+        
+        result <- anova(fit)
+        
+        result
+    })
     # LIMIT OF DETECTION CALCULATION -------------------------------------------
     lod.data <- reactive({
 
