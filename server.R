@@ -173,43 +173,37 @@ server <- function(input, output, session) {
             input$select.variable.mcp1,
             input$select.variable.mcp2,
             input$mu,
-            input$par,
+            input$par_ttest,
             input$alternative_ttest_p,
             input$alpha_testt)
-        
-        option <- input$t.test.type
-        alt <- input$alternative_ttest_p
-        alpha <- input$alpha_testt
-        mu <- input$mu
-        pair <- input$par_ttest
-        
+
         X <- data()[[input$select.variable.mcp1]]
         Y <- data()[[input$select.variable.mcp2]]
+
         
-        
-        if (option == 'onesample'){
-            t.test(x = X, 
-                   y = NULL, 
-                   alternative = alt, 
-                   mu = mu, 
-                   paired = F, 
-                   conf.level = alpha)
-        } else if (option == 'twosamples'){
-            if (pair == 'Paired'){
-                t.test(x = X, 
-                       y = Y, 
-                       alternative = alt, 
-                       paired = T, 
-                       conf.level = alpha)
-            } else if (pair == "Non-paired") {
-                t.test(x = X, 
-                       y = Y, 
-                       alternative = alt, 
-                       paired = F, 
-                       conf.level = alpha)
+        if (input$t.test.type == 'onesample') {
+            t.test(X, 
+                   mu = input$mu, 
+                   conf.level = input$alpha_testt)
+        } else if (input$t.test.type == 'twosamples') {
+            if (input$par_ttest == 'Paired') {
+                t.test(x = X,
+                       y = Y,
+                       alternative = input$alternative_ttest_p,
+                       paired = TRUE,
+                       conf.level = input$alpha_testt
+                       )
+            } else {
+                t.test(x = X,
+                       y = Y,
+                       alternative = input$alternative_ttest_p,
+                       paired = FALSE,
+                       conf.level = input$alpha_testt
+                )
             }
         }
     })
+    
     
     # NON-PARAMETRIC MEANS COMPARISON ------------------------------------------
     output$means_nonparam_output <- renderPrint({
@@ -291,8 +285,6 @@ server <- function(input, output, session) {
             cat('---------------------------------------------\n')
             analysis.posthoc(model, fit)
         }
-
-        
     })
     
     # NON-PARAMETRIC ANALYSIS OF VARIANCE --------------------------------------
