@@ -77,23 +77,23 @@ server <- function(input, output, session) {
     
     # ANOVA ----------------------------------
     output$select.variable.aovp1 <- renderUI({
-        selectInput('select.variable.aovp1', 'Variable X', choices = names(data()))
+        selectInput('select.variable.aovp1', 'Variable X1', choices = names(data()))
     })
     
     output$select.variable.aovp2 <- renderUI({
-        selectInput('select.variable.aovp2', 'Variable Y', choices = names(data()))
+        selectInput('select.variable.aovp2', 'Variable X2', choices = names(data()))
+    })
+    
+    output$select.variable.aovp3 <- renderUI({
+        selectInput('select.variable.aovp3', 'Variable Y', choices = names(data()))
     })
     
     output$select.variable.aovnp1 <- renderUI({
-        selectInput('select.variable.aovnp1', 'Variable X1', choices = names(data()))
+        selectInput('select.variable.aovnp1', 'Variable X', choices = names(data()))
     })
     
     output$select.variable.aovnp2 <- renderUI({
-        selectInput('select.variable.aovnp2', 'Variable X2', choices = names(data()))
-    })
-    
-    output$select.variable.aovnp3 <- renderUI({
-        selectInput('select.variable.aovnp3', 'Variable Y', choices = names(data()))
+        selectInput('select.variable.aovnp2', 'Variable Y', choices = names(data()))
     })
 
     # BASE PLOTS ---------------------------------------------------------------
@@ -258,17 +258,58 @@ server <- function(input, output, session) {
     # PARAMETRIC ANALYSIS OF VARIANCE ------------------------------------------
     output$anova_param_output <- renderPrint({
         req(input$select.variable.aovp1,
-            input$select.variable.aovp2)
+            input$select.variable.aovp2,
+            input$select.variable.aovp3)
+
         
-        X <- data()[[input$select.variable.aovp1]]
-        Y <- data()[[input$select.variable.aovp2]]
-        stopifnot(is.factor(X), is.numeric(Y))
+        X1 <- data()[[input$select.variable.aovp1]]
+        X2 <- data()[[input$select.variable.aovp2]]
+        Y <- data()[[input$select.variable.aovp3]]
+        option <- input$aovp.test.type
         
-        fit <- aov(Y ~ X, data = data())
+        if (option == 'onesample') {
+            stopifnot(is.factor(X1))
+            
+            aov.model <- analysis.of.variance(Y, X1, data())
+            
+            fit <- aov.model$fitted.model
+            model <- aov.model$model
+            
+            print(aov.model)
+            cat('---------------------------------------------\n')
+            analysis.posthoc(model, fit) 
+        } else if (option == 'twosamples') {
+            stopifnot(is.factor(X1),
+                      is.factor(X2))
+            
+            aov.model <- analysis.of.variance.two(Y, X1, X2, data())
+            
+            fit <- aov.model$fitted.model
+            model <- aov.model$model
+            
+            print(aov.model)
+            cat('---------------------------------------------\n')
+            analysis.posthoc(model, fit)
+        }
+
         
-        result <- anova(fit)
+    })
+    
+    # NON-PARAMETRIC ANALYSIS OF VARIANCE --------------------------------------
+    output$anova_nonparam_output <- renderPrint({
+        req(input$select.variable.aovnp1,
+            input$select.variable.aovnp2)
         
-        result
+        
+        X <- data()[[input$select.variable.aovnp1]]
+        Y <- data()[[input$select.variable.aovnp2]]
+        
+        stopifnot(is.factor(X))
+        
+        model <- kruskal.analysis(Y, X, data())
+        cat('---------------------------------------------\n')
+        kruskal.posthoc(Y, X, model, data())
+        
     })
     # LIMIT OF DETECTION CALCULATION -------------------------------------------
     lod.data <- reactive({

@@ -11,6 +11,8 @@ library(splines)
 library(shinythemes)
 library(shinyWidgets)
 library(reshape2)
+library(FSA)
+library(rcompanion)
 
 # HOME LINUX SOURCE FILES ------------------------------------------------------
 # OPERATORS FUNCTIONS
@@ -28,6 +30,7 @@ source('/Users/Bartek/Desktop/AmpliStat/operators/preprocessing_lod_data.R')
 source('/Users/Bartek/Desktop/AmpliStat/operators/melt_data.R')
 source('/Users/Bartek/Desktop/AmpliStat/operators/diff_curve_calc.R')
 source('/Users/Bartek/Desktop/AmpliStat/operators/assumptions.R')
+source('/Users/Bartek/Desktop/AmpliStat/operators/anova.R')
 
 # PLOTTING FUNCTIONS
 source('/Users/Bartek/Desktop/AmpliStat/plots/base_plot.R')
@@ -215,18 +218,25 @@ ui <- fluidPage(
                       sidebarLayout(
                         sidebarPanel(
                           strong("ANOVA test"),
+                          
+                          selectInput('aovp.test.type',
+                                      'Test type',
+                                      choices = c(`One Sample` = "onesample",
+                                                  `Two Samples` = "twosamples")),
                           tags$hr(),
 
-                          helpText("Categorical X variable"),
+                          helpText("Categorical X1 variable"),
                           uiOutput('select.variable.aovp1'),
-                          
-                          helpText("Dependent Y variable"),
+                          helpText("Categorical X2 variable"),
                           uiOutput('select.variable.aovp2'),
+                          helpText("Dependent Y variable"),
+                          uiOutput('select.variable.aovp3'),
                           
                           tags$hr(),
                           submitButton()
                         ),
-                        mainPanel(verbatimTextOutput('anova_param_output'), width = 8)
+                        mainPanel(verbatimTextOutput('anova_param_output'),
+                                  width = 8)
                       )),
              
              # NON-PARAMETRIC TESTS --------------------------------------------
@@ -235,17 +245,11 @@ ui <- fluidPage(
                       sidebarLayout(
                         sidebarPanel(
 
-                          selectInput('aovnp.test.type',
-                                      'Test type',
-                                      choices = c("One sample",
-                                                  "Two samples")),
                           tags$hr(),
                           helpText("Categorical X1 variable"),
                           uiOutput('select.variable.aovnp1'),
-                          helpText("Categorical X2 variable"),
+                          helpText("Categorical Y variable"),
                           uiOutput('select.variable.aovnp2'),
-                          helpText("Independent Y variable"),
-                          uiOutput('select.variable.aovnp3'),
                           
                           tags$hr(),
                           submitButton()
