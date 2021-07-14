@@ -1,0 +1,11 @@
+name: amplistat
+title:
+username:
+account: amplistat
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 4384446
+bundleId: 4818248
+url: https://amplistat.shinyapps.io/amplistat/
+when: 1626258208.85173
+lastSyncTime: 1626258208.85173
