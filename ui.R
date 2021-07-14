@@ -13,6 +13,8 @@ library(shinyWidgets)
 library(reshape2)
 library(FSA)
 library(rcompanion)
+library(rsconnect)
+library(shinydashboard)
 
 # HOME LINUX SOURCE FILES ------------------------------------------------------
 # OPERATORS FUNCTIONS
@@ -25,17 +27,17 @@ library(rcompanion)
 # source('/home/hartek/AmpliStat/plots/fluorescence_plot.R')
 
 # WORK OFFICE SOURCE FILES -----------------------------------------------------
-source('/Users/Bartek/Desktop/AmpliStat/operators/configure_lod_set.R')
-source('/Users/Bartek/Desktop/AmpliStat/operators/preprocessing_lod_data.R')
-source('/Users/Bartek/Desktop/AmpliStat/operators/melt_data.R')
-source('/Users/Bartek/Desktop/AmpliStat/operators/diff_curve_calc.R')
-source('/Users/Bartek/Desktop/AmpliStat/operators/assumptions.R')
-source('/Users/Bartek/Desktop/AmpliStat/operators/anova.R')
+source('operators/configure_lod_set.R', chdir = T)
+source('operators/preprocessing_lod_data.R')
+source('operators/melt_data.R')
+source('operators/diff_curve_calc.R')
+source('operators/assumptions.R')
+source('operators/anova.R')
 
 # PLOTTING FUNCTIONS
-source('/Users/Bartek/Desktop/AmpliStat/plots/base_plot.R')
-source('/Users/Bartek/Desktop/AmpliStat/plots/fluorescence_plot.R')
-source('/Users/Bartek/Desktop/AmpliStat/plots/generate_lod_plot.R')
+source('plots/base_plot.R')
+source('plots/fluorescence_plot.R')
+source('plots/generate_lod_plot.R')
 
 # UI FOR WHOLE APPLICATION -----------------------------------------------------
 ui <- fluidPage(
