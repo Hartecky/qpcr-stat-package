@@ -95,6 +95,11 @@ server <- function(input, output, session) {
     output$select.variable.aovnp2 <- renderUI({
         selectInput('select.variable.aovnp2', 'Variable Y', choices = names(data()))
     })
+    
+    # FLUORESCENCE PLOT -----------------------
+    output$ref.curve <- renderUI({
+        selectInput('ref.curve', 'Reference curve', choices = c(2:ncol(data())-1))
+    })
 
     # BASE PLOTS ---------------------------------------------------------------
     output$base_plots_output <- renderPlotly({
@@ -403,11 +408,34 @@ server <- function(input, output, session) {
         }
     })
     
+    diff.data <- reactive({
+        req(input$file1,
+            input$ref.curve)
+        
+        diff.tmp <- data()
+        stopifnot()
+        if(colnames(diff.tmp)[1]=="Temperature"){
+            new.data <- diff.calc(diff.tmp, as.integer(input$ref.curve))
+            melt.data <- melting.data(dataframe = new.data, 
+                                      id_variables = "Temperature")
+        }
+        
+    })
+    
     output$qpcr_plot_output <- renderPlotly({
         # Require provided input file with data
         req(input$file1)
-        
+
+        #print(diff.data())
         # Return overview of the data with head
         fluorescence.plot(pcr.data())
     })
+    
+    output$qpcr_diff_output <- renderPlotly({
+        req(input$file1,
+            input$ref.curve)
+        
+        fluorescence.plot(diff.data())
+    })
+    
 }
