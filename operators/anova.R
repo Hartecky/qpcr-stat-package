@@ -21,7 +21,6 @@ analysis.posthoc <- function(model, fitted.model) {
 
 kruskal.analysis <- function(Y, X, data){
   model <- kruskal.test(Y ~ X, data)
-  
   print(model)
 }
 

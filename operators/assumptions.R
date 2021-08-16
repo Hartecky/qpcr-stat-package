@@ -1,17 +1,3 @@
-# Description:
-# Function which is deciding which operation should be performed:
-# 1. Normality Shapiro-Wilk test
-# 2. Variance Bartlett test
-# 3. Outliers detection based on Z-score
-# 
-# Inpus:
-# X - numeric vector
-# Y - factor variable
-# option - string with option name
-# 
-# Output:
-# Returns results of each operation
-
 assumptions.testing <- function(X, Y, option) {
   if (option == 'normtest') {
     stopifnot(is.numeric(X))
@@ -39,9 +25,6 @@ assumptions.testing <- function(X, Y, option) {
   }
 }
  
-# Prints brief information about performed operation and 
-# provides hints for hypotheses testing
-
 assumptions.messages <- function(option, variable) {
   if (option == 'normtest') {
     cat(

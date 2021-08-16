@@ -1,16 +1,4 @@
-# Processes results from lod logit model into a dataframe
-# used in generating LOD plot
-#
-# Predicts results from a fitted LOD logit model and limit
-# of detection value for given significance level. Also 
-# defines top and bottom interval
-# 
-# Returns:
-# 1. predicted data
-# 2. dataframe with dilution curve and predicted data
-# 3. bottom and top interval of a LOD value for given
-#    significance level
-#    
+    
 prepare.set <- function(model, x.lod, alpha) {
   
   dil <- 10^seq(-1,1,0.01)

@@ -1,5 +1,4 @@
-# Generating fluorescence plots from qPCR data 
-# with data processed with melting.data function
+
 fluorescence.plot <- function(melt.data){
   
   hrm.plot <- ggplot(melt.data, aes(Temperature, FluorescenceSignal, col=Sample)) + 

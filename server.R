@@ -24,7 +24,6 @@ server <- function(input, output, session) {
     
     # RENDER DATATABLE FOR GIVEN DATA ------------------------------------------
     output$contents <- renderDataTable({
-        # Require input file
         req(input$file1)
         
         if (input$disp == "head") {
@@ -37,7 +36,6 @@ server <- function(input, output, session) {
     
     # RENDER DATA SUMMARY ------------------------------------------------------
     output$contents.stats <- renderPrint({
-        # Require input file
         req(input$file1)
         
         summary(data())
@@ -104,14 +102,12 @@ server <- function(input, output, session) {
     # BASE PLOTS ---------------------------------------------------------------
     output$base_plots_output <- renderPlotly({
         
-        # Require selected input and specified plot type
         req(input$select.variable, input$plot.type)
         
         X <- data()[[input$select.variable]]
         variable <- input$select.variable
         option <- input$plot.type
         
-        # Render slider input if chosen plot type is histogram
         if (option == 'histogram'){
             output$hist.slider <- renderUI({
                 sliderInput("bins",
@@ -125,14 +121,13 @@ server <- function(input, output, session) {
         } else if (option != 'histogram'){
                 output$hist.slider <- renderUI({ })
             }
-        
-        # Generating plots
+
         generate.plot(X, variable, option, input$bins)
         })
     
     # ASSUMPTION MESSAGES ------------------------------------------------------
     output$assumptions_messages <- renderPrint({
-        # Require option and variables
+
         req(input$check.assumps, 
             input$select.variable.assum1)
         
@@ -256,16 +251,16 @@ server <- function(input, output, session) {
     
     # PARAMETRIC ANALYSIS OF VARIANCE ------------------------------------------
     output$anova_param_output <- renderPrint({
+        
         req(input$select.variable.aovp1,
             input$select.variable.aovp2,
             input$select.variable.aovp3)
 
-        
         X1 <- data()[[input$select.variable.aovp1]]
         X2 <- data()[[input$select.variable.aovp2]]
         Y <- data()[[input$select.variable.aovp3]]
         option <- input$aovp.test.type
-        
+
         if (option == 'onesample') {
             stopifnot(is.factor(X1))
             
@@ -277,6 +272,7 @@ server <- function(input, output, session) {
             print(aov.model)
             cat('---------------------------------------------\n')
             analysis.posthoc(model, fit) 
+
         } else if (option == 'twosamples') {
             stopifnot(is.factor(X1),
                       is.factor(X2))
@@ -311,54 +307,39 @@ server <- function(input, output, session) {
     # LIMIT OF DETECTION CALCULATION -------------------------------------------
     lod.data <- reactive({
 
-        # Require provided input file with data
         req(input$file1)
         lod.matrix <- data()
 
-        # Check the dimension of the provided data
         names.list <- c('dilution', 'total', 'positive')
-        if (names(lod.matrix) == names.list){
-            if(dim(lod.matrix)[1]==3 & dim(lod.matrix)[2]==3) {
-                
-                lod <- lod.operations(lod.matrix)
-                
-                plot.labs <- prepare.set(lod$model.glm,
-                                         lod$X.LOD,
-                                         lod$level)
 
-                pred.data <- plot.labs$pred.df
-                top.interval <- plot.labs$top.interval
-                bottom.interval <- plot.labs$bottom.interval
+        lod <- lod.operations(lod.matrix)
+        
+        plot.labs <- prepare.set(lod$model.glm,
+                                 lod$X.LOD,
+                                 lod$level)
+        
+        pred.data <- plot.labs$pred.df
+        top.interval <- plot.labs$top.interval
+        bottom.interval <- plot.labs$bottom.interval
 
-                # Return calculation results into DataFrame
-                lod.data = list(pred.data = pred.data,
-                                top.interval = top.interval,
-                                bottom.interval = bottom.interval,
-                                x.lod = lod$X.LOD,
-                                significance = 0.95,
-                                logit.value = lod$level,
-                                se.lod = lod$log.SE.LOD)
-            } else {
-            stop('Data provided for LOD calculation is incorrect. 
-                Exit code with status 1. 
-                
-                Provided data is not a 3x3 matrix')}
-            } else { 
-            stop('Data provided for LOD calculation is incorrect. 
-                 Exit code with status 1.
-                 
-                 Provided data does not have proper column names
-                 (dilution, total, positive)')}
+        lod.data = list(
+            pred.data = pred.data,
+            top.interval = top.interval,
+            bottom.interval = bottom.interval,
+            x.lod = lod$X.LOD,
+            significance = 0.95,
+            logit.value = lod$level,
+            se.lod = lod$log.SE.LOD
+        )
+        
+        
     })
     
     # LIMIT OD DETECTION PLOT --------------------------------------------------
     output$lod_plots_output <- renderPlotly({
-        
-        # Require provided input file with data, and also
-        # require calculated coefficients from LOD calculations
+
         req(input$file1, lod.data())
-        
-        # Return Limit of Detection interactive plot with pointed values
+
         lod.plot(data = data(),
                  pred.data = lod.data()$pred.data, 
                  top.interval = lod.data()$top.interval, 
@@ -369,10 +350,8 @@ server <- function(input, output, session) {
     # LIMIT OF DETECTION STATISTICS --------------------------------------------
     output$lod_stats_output <- renderPrint({
         
-        # Require provided input file with data
         req(input$file1, lod.data())
         
-        # Return a dataframe with calculated values
         data.frame(significance = lod.data()$significance,
                    logit.value = lod.data()$logit.value,
                    lod.value = lod.data()$x.lod,
@@ -423,11 +402,7 @@ server <- function(input, output, session) {
     })
     
     output$qpcr_plot_output <- renderPlotly({
-        # Require provided input file with data
         req(input$file1)
-
-        #print(diff.data())
-        # Return overview of the data with head
         fluorescence.plot(pcr.data())
     })
     
