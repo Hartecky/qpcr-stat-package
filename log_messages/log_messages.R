@@ -44,3 +44,33 @@ decision.making.messages <- function(option){
         groups are not equal\n')
   }
 }
+
+lod.error.message <- function(data) {
+  
+  names.list <- c('dilution', 'total', 'positive')
+  
+  if(dim(data)[1]==3 & dim(data)[2]==3 & identical(names.list, names(data))) {
+    return()
+  } else {
+    stop("
+    Dataset provided for LOD calculation is incorrect. 
+    Provided data is not a 3x3 matrix with column names 
+    set respectively as 'dilution', 'total', 'positive'.
+    
+    Example dataset for LOD calculation is attached in the 
+    AmpliStat/datasets directory")
+  }
+}
+
+fluorescence.error.message <- function(data) {
+  stop("
+  Data provided for qPCR fluorescence visualisation is incorrect. Exit code with status 1.
+  Common problems:
+  - First column is not the 'Temperature' column;
+  - incorrect separators for values or digits;
+  - undeclared header;
+  - wrong first column name
+  
+  Example dataset for fluorescence plot visualisation is attached
+  in the AmpliStat/datasets directory")
+}
