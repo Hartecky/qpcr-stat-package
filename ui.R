@@ -4,6 +4,7 @@
 # USER INTERFACE COMPONENTS
 # ------------------------------------------------------------------------------
 
+# NECESSARY LIBRIARIES ---------------------------------------------------------
 library(tidyverse)
 library(shiny)
 library(plotly)
@@ -60,36 +61,30 @@ ui <- fluidPage(
     assumptions,
     
     # MEANS COMPARISON MENU ----------------------------------------------------
-    navbarMenu(
-      'Means Comparison',
-      
-      # PARAMETRIC TESTS -------------------------------------------------------
-      mc.parametric,
-      
-      # NON-PARAMETRIC TESTS --------------------------------------------
-      mc.nonparametric
-    ),
+    navbarMenu('Means Comparison',
+               
+               # PARAMETRIC TESTS ----------------------------------------------
+               mc.parametric,
+               
+               # NON-PARAMETRIC TESTS ------------------------------------------
+               mc.nonparametric),
     
     # ANALYSIS OF VARIANCE PANEL -----------------------------------------------
-    navbarMenu(
-      'ANOVA',
-      
-      # PARAMETRIC TESTS ------------------------------------------------
-      aov.parametric,
-      
-      # NON-PARAMETRIC TESTS --------------------------------------------
-      aov.nonparametric
-    ),
+    navbarMenu('ANOVA',
+               
+               # PARAMETRIC TESTS ----------------------------------------------
+               aov.parametric,
+               
+               # NON-PARAMETRIC TESTS ------------------------------------------
+               aov.nonparametric),
     
     # LIMIT OF DETECTION PANEL -------------------------------------------------
     lod.ui,
     
     # HIGH RESOLUTION MELT MENU ------------------------------------------------
-    navbarMenu(
-      'HRM',
-      
-      # MELTING CURVES VISUALISATION ------------------------------------
-      hrm.ui
-    )
+    navbarMenu('HRM',
+               
+               # MELTING CURVES VISUALISATION ----------------------------------
+               hrm.ui)
   )
 )

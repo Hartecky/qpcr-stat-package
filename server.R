@@ -10,16 +10,18 @@ server <- function(input, output, session) {
     # UPLOAD DATA INTO SHINY APPLICATION ---------------------------------------
     data <- reactive({
         file1 <- input$file1
+        
         if (is.null(file1)) {
             return()
+        } else {
+            data = read.csv(
+                file = file1$datapath,
+                header = input$header,
+                sep = input$sep,
+                dec = input$dec,
+                stringsAsFactors = input$string
+            )
         }
-        data = read.csv(
-            file = file1$datapath,
-            header = input$header,
-            sep = input$sep,
-            dec = input$dec,
-            stringsAsFactors = input$string
-        )
     })
     
     # RENDER DATATABLE FOR GIVEN DATA ------------------------------------------
