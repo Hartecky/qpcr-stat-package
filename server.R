@@ -159,14 +159,9 @@ server <- function(input, output, session) {
         
         option <- input$check.assumps
         
-        if (option == 'normtest' || option == 'vartest'){
-            cat("Decision making:,
-        
-        p < 0.05 - Reject H0
-        p > 0.05 - Fail to reject H0")
-        } else {
-            return()
-        }  
+        # TODO
+        # if option is norm and var test, then decision making logs
+        decision.making.messages(option)
     }) 
     
     # PARAMETRIC MEANS COMPARISON ----------------------------------------------
@@ -312,7 +307,7 @@ server <- function(input, output, session) {
         req(input$file1)
         lod.matrix <- data()
 
-        names.list <- c('dilution', 'total', 'positive')
+        lod.error.message(lod.matrix)
 
         lod <- lod.operations(lod.matrix)
         
@@ -333,8 +328,6 @@ server <- function(input, output, session) {
             logit.value = lod$level,
             se.lod = lod$log.SE.LOD
         )
-        
-        
     })
     
     # LIMIT OD DETECTION PLOT --------------------------------------------------
@@ -370,22 +363,7 @@ server <- function(input, output, session) {
         if(colnames(pcr.tmp)[1]=="Temperature"){
             pcr.melt = melting.data(dataframe = pcr.tmp, id_variables = "Temperature")
         } else {
-            stop("
-                 Data provided for qPCR fluorescence visualisation is incorrect. Exit code with status 1.
-                 Common problems:
-                 - First column is not the 'Temperature' column;
-                 - incorrect separators for values or digits;
-                 - undeclared header;
-                 - wrong first column name
-                 
-                 Example of the correct data:
-                 
-                 Temperature; 1; 2; 3
-                 79,99; 89,38; 89,39; 89,54
-                 80,00; 89,34; 89,35; 89,50
-                 80,01; 89,30; 89,31; 89,46
-                 80,02; 89,25; 89,27; 89,42
-                 ")
+            fluorescence.error.message(data())
         }
     })
     
@@ -394,7 +372,7 @@ server <- function(input, output, session) {
             input$ref.curve)
         
         diff.tmp <- data()
-        stopifnot()
+
         if(colnames(diff.tmp)[1]=="Temperature"){
             new.data <- diff.calc(diff.tmp, as.integer(input$ref.curve))
             melt.data <- melting.data(dataframe = new.data, 

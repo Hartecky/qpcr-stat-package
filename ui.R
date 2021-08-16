@@ -5,7 +5,6 @@
 # ------------------------------------------------------------------------------
 
 # NECESSARY LIBRIARIES ---------------------------------------------------------
-library(tidyverse)
 library(shiny)
 library(plotly)
 library(splines)
@@ -16,6 +15,7 @@ library(FSA)
 library(rcompanion)
 library(rsconnect)
 library(shinydashboard)
+library(outliers)
 
 # SET WORKING DIRECTORY --------------------------------------------------------
 CURRENT.PATH <- dirname(rstudioapi::getSourceEditorContext()$path)
@@ -32,7 +32,10 @@ source('ui/aov.nonparametric.ui.R')
 source('ui/lod.ui.R')
 source('ui/hrm.ui.R')
 
-# WORK OFFICE SOURCE FILES -----------------------------------------------------
+# LOGS FILES
+source('log_messages/log_messages.R')
+
+# OPERATORS SOURCE FILES -----------------------------------------------------
 source('operators/configure_lod_set.R')
 source('operators/preprocessing_lod_data.R')
 source('operators/melt_data.R')
