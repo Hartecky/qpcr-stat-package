@@ -378,7 +378,6 @@ server <- function(input, output, session) {
             melt.data <- melting.data(dataframe = new.data, 
                                       id_variables = "Temperature")
         }
-        
     })
     
     output$qpcr_plot_output <- renderPlotly({
