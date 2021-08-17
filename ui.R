@@ -4,33 +4,23 @@
 # USER INTERFACE COMPONENTS
 # ------------------------------------------------------------------------------
 
-# NECESSARY LIBRIARIES ---------------------------------------------------------
-library(shiny)
-library(plotly)
-library(splines)
-library(shinythemes)
-library(shinyWidgets)
-library(reshape2)
-library(FSA)
-library(rcompanion)
-library(rsconnect)
-library(shinydashboard)
-library(outliers)
-
 # SET WORKING DIRECTORY --------------------------------------------------------
 CURRENT.PATH <- dirname(rstudioapi::getSourceEditorContext()$path)
 setwd(CURRENT.PATH)
 
+# NECESSARY LIBRIARIES ---------------------------------------------------------
+source('packages.R')
+
 # USER INTERFACE COMPONENTS ----------------------------------------------------
-source('ui/data.upload.R')
-source('ui/data.vis.R')
-source('ui/assumptions.ui.R')
-source('ui/mc.parametric.ui.R')
-source('ui/mc.nonparametric.ui.R')
-source('ui/aov.parametric.ui.R')
-source('ui/aov.nonparametric.ui.R')
-source('ui/lod.ui.R')
-source('ui/hrm.ui.R')
+source('ui/aov_nonparametric_ui.R')
+source('ui/aov_parametric_ui.R')
+source('ui/assumptions_ui.R')
+source('ui/data_upload_ui.R')
+source('ui/data_vis_ui.R')
+source('ui/hrm_ui.R')
+source('ui/lod_ui.R')
+source('ui/mc_nonparametric_ui.R')
+source('ui/mc_parametric_ui.R')
 
 # LOGS FILES
 source('log_messages/log_messages.R')
@@ -42,6 +32,7 @@ source('operators/melt_data.R')
 source('operators/diff_curve_calc.R')
 source('operators/assumptions.R')
 source('operators/anova.R')
+source('operators/mc_parametric_tests.R')
 
 # PLOTTING FUNCTIONS
 source('plots/base_plot.R')

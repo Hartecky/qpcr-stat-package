@@ -159,8 +159,6 @@ server <- function(input, output, session) {
         
         option <- input$check.assumps
         
-        # TODO
-        # if option is norm and var test, then decision making logs
         decision.making.messages(option)
     }) 
     
@@ -177,28 +175,13 @@ server <- function(input, output, session) {
         X <- data()[[input$select.variable.mcp1]]
         Y <- data()[[input$select.variable.mcp2]]
 
-        
-        if (input$t.test.type == 'onesample') {
-            t.test(X, 
-                   mu = input$mu, 
-                   conf.level = input$alpha_testt)
-        } else if (input$t.test.type == 'twosamples') {
-            if (input$par_ttest == 'Paired') {
-                t.test(x = X,
-                       y = Y,
-                       alternative = input$alternative_ttest_p,
-                       paired = TRUE,
-                       conf.level = input$alpha_testt
-                       )
-            } else {
-                t.test(x = X,
-                       y = Y,
-                       alternative = input$alternative_ttest_p,
-                       paired = FALSE,
-                       conf.level = input$alpha_testt
-                )
-            }
-        }
+        compare.means.param(test.type = input$t.test.type,
+                            X = X,
+                            Y = Y,
+                            mu = input$mu,
+                            alternative = input$alternative_ttest_p,
+                            paired = input$par_ttest,
+                            confidence = input$alpha_testt)
     })
     
     
