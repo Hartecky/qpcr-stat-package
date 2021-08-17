@@ -32,7 +32,7 @@ source('operators/melt_data.R')
 source('operators/diff_curve_calc.R')
 source('operators/assumptions.R')
 source('operators/anova.R')
-source('operators/mc_parametric_tests.R')
+source('operators/means_comparison_tests.R')
 
 # PLOTTING FUNCTIONS
 source('plots/base_plot.R')

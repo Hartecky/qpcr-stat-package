@@ -194,38 +194,40 @@ server <- function(input, output, session) {
             input$par_wilcox,
             input$alternative_wilcox,
             input$alpha_wilcox)
-        
-        option <- input$mcnp.test.type
-        alt <- input$alternative_wilcox
-        alpha <- input$alpha_wilcox
-        mu <- input$alpha_wilcox
-        pair <- input$par_wilcox
-        
+
         X <- data()[[input$select.variable.mcnp1]]
         Y <- data()[[input$select.variable.mcnp2]]
         
-        if (option == 'onesample'){
-            wilcox.test(x = X, 
-                        y = NULL, 
-                        alternative = alt, 
-                        mu = mu, 
-                        paired = F, 
-                        conf.level = alpha)
-        } else if (option == 'twosamples') {
-            if (pair == 'Paired'){
-                wilcox.test(x = X, 
-                            y = Y, 
-                            alternative = alt, 
-                            paired = T, 
-                            conf.level = alpha)
-            } else if (option == 'Non-paired') {
-                wilcox.test(x = X, 
-                            y = Y, 
-                            alternative = alt, 
-                            paired = F, 
-                            conf.level = alpha)
-            }
-        }
+        compare.means.nonparam(test.type = input$mcnp.test.type,
+                               X = X,
+                               Y = Y,
+                               mu = input$mu_np,
+                               alternative = input$alternative_wilcox,
+                               paired = input$par_wilcox,
+                               confidence = input$alpha_wilcox)
+        
+        # if (option == 'onesample'){
+        #     wilcox.test(x = X, 
+        #                 y = NULL, 
+        #                 alternative = alt, 
+        #                 mu = mu, 
+        #                 paired = F, 
+        #                 conf.level = alpha)
+        # } else if (option == 'twosamples') {
+        #     if (pair == 'Paired'){
+        #         wilcox.test(x = X, 
+        #                     y = Y, 
+        #                     alternative = alt, 
+        #                     paired = T, 
+        #                     conf.level = alpha)
+        #     } else if (option == 'Non-paired') {
+        #         wilcox.test(x = X, 
+        #                     y = Y, 
+        #                     alternative = alt, 
+        #                     paired = F, 
+        #                     conf.level = alpha)
+        #     }
+        # }
         
     })
     
