@@ -31,7 +31,7 @@ source('operators/preprocessing_lod_data.R')
 source('operators/melt_data.R')
 source('operators/diff_curve_calc.R')
 source('operators/assumptions.R')
-source('operators/anova.R')
+source('operators/anova_tests.R')
 source('operators/means_comparison_tests.R')
 
 # PLOTTING FUNCTIONS

@@ -205,30 +205,6 @@ server <- function(input, output, session) {
                                alternative = input$alternative_wilcox,
                                paired = input$par_wilcox,
                                confidence = input$alpha_wilcox)
-        
-        # if (option == 'onesample'){
-        #     wilcox.test(x = X, 
-        #                 y = NULL, 
-        #                 alternative = alt, 
-        #                 mu = mu, 
-        #                 paired = F, 
-        #                 conf.level = alpha)
-        # } else if (option == 'twosamples') {
-        #     if (pair == 'Paired'){
-        #         wilcox.test(x = X, 
-        #                     y = Y, 
-        #                     alternative = alt, 
-        #                     paired = T, 
-        #                     conf.level = alpha)
-        #     } else if (option == 'Non-paired') {
-        #         wilcox.test(x = X, 
-        #                     y = Y, 
-        #                     alternative = alt, 
-        #                     paired = F, 
-        #                     conf.level = alpha)
-        #     }
-        # }
-        
     })
     
     # PARAMETRIC ANALYSIS OF VARIANCE ------------------------------------------
@@ -242,32 +218,8 @@ server <- function(input, output, session) {
         X2 <- data()[[input$select.variable.aovp2]]
         Y <- data()[[input$select.variable.aovp3]]
         option <- input$aovp.test.type
-
-        if (option == 'onesample') {
-            stopifnot(is.factor(X1))
-            
-            aov.model <- analysis.of.variance(Y, X1, data())
-            
-            fit <- aov.model$fitted.model
-            model <- aov.model$model
-            
-            print(aov.model)
-            cat('---------------------------------------------\n')
-            analysis.posthoc(model, fit) 
-
-        } else if (option == 'twosamples') {
-            stopifnot(is.factor(X1),
-                      is.factor(X2))
-            
-            aov.model <- analysis.of.variance.two(Y, X1, X2, data())
-            
-            fit <- aov.model$fitted.model
-            model <- aov.model$model
-            
-            print(aov.model)
-            cat('---------------------------------------------\n')
-            analysis.posthoc(model, fit)
-        }
+        
+        anova.test.param(input$aovp.test.type, Y, X1, X2, data())
     })
     
     # NON-PARAMETRIC ANALYSIS OF VARIANCE --------------------------------------
@@ -279,12 +231,7 @@ server <- function(input, output, session) {
         X <- data()[[input$select.variable.aovnp1]]
         Y <- data()[[input$select.variable.aovnp2]]
         
-        stopifnot(is.factor(X))
-        
-        model <- kruskal.analysis(Y, X, data())
-        cat('---------------------------------------------\n')
-        kruskal.posthoc(Y, X, model, data())
-        
+        anova.test.nonparam(Y, X, data())
     })
     # LIMIT OF DETECTION CALCULATION -------------------------------------------
     lod.data <- reactive({
