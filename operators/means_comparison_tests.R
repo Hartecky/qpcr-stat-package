@@ -1,22 +1,29 @@
 compare.means.param <- function(test.type, X, Y, mu, alternative, paired, confidence){
-  
+  check.alpha(confidence)
   if (test.type == 'onesample') {
-    # check parameters conditions
-    stopifnot(is.vector(X) | is.numeric(X) | is.numeric(mu))
-    alpha_conditions(confidence)
     # one sample test
+    stopifnot(is.vector(X) | is.numeric(X) | is.numeric(mu))
     t.test(x = X, 
            mu = mu,
-           conf.level = confidence)
+           conf.level = confidence,
+           alternative = alternative)
   } else if (test.type == 'twosamples' & paired == 'Paired') {
+
     # two sample paired test 
+    stopifnot(is.vector(X) | is.numeric(X) | length(X) < 2)
+    stopifnot(is.vector(Y) | is.numeric(Y) | length(X) < 2)
+    stopifnot(length(X) != length(Y))
     t.test(x = X,
            y = Y,
            alternative = alternative,
            paired = TRUE,
            conf.level = confidence)
   } else if (test.type == 'twosamples' & paired == 'Non-paired') {
+
     # two sample non-paired test
+    stopifnot(is.vector(X) | is.numeric(X) | length(X) < 2)
+    stopifnot(is.vector(Y) | is.numeric(Y) | length(X) < 2)
+    stopifnot(length(X) != length(Y))
     t.test(x = X,
            y = Y,
            alternative = alternative,
@@ -26,15 +33,18 @@ compare.means.param <- function(test.type, X, Y, mu, alternative, paired, confid
 }
 
 compare.means.nonparam <- function(test.type, X, Y, mu, alternative, paired, confidence){
-  
+  check.alpha(confidence)
   if (test.type == 'onesample') {
     # one sample wilcox test
+    stopifnot(is.vector(X) | is.numeric(X) | is.numeric(mu))
     wilcox.test(X,
                 mu = mu,
                 alternative = alternative,
                 conf.level = confidence)
   } else if (test.type == 'twosamples' & paired == 'Paired') {
     # two samples wilcox paired test
+    stopifnot(is.vector(X) | is.numeric(X) | length(X) < 2)
+    stopifnot(is.vector(Y) | is.numeric(Y) | length(X) < 2)
     wilcox.test(x = X,
                 y = Y,
                 alternative = alternative,
@@ -42,6 +52,8 @@ compare.means.nonparam <- function(test.type, X, Y, mu, alternative, paired, con
                 conf.level = confidence)
   } else if (test.type == 'twosamples' & paired == 'Non-paired') {
     # two samples wilcox non-paired test
+    stopifnot(is.vector(X) | is.numeric(X) | length(X) < 2)
+    stopifnot(is.vector(Y) | is.numeric(Y) | length(X) < 2)
     wilcox.test(x = X,
                 y = Y,
                 alternative = alternative,
