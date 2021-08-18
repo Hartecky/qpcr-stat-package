@@ -1,5 +1,5 @@
 analysis.of.variance <- function(Y, X, data) {
-
+  
   fit <- aov(Y ~ X, data = data)
   fitted <- anova(fit)
   return(list(fitted.model = fitted,
@@ -7,6 +7,7 @@ analysis.of.variance <- function(Y, X, data) {
 }
 
 analysis.of.variance.two <- function(Y, X1, X2, data){
+  
   fit <- aov(Y ~ X1 + X2, data = data)
   fitted <- anova(fit)
   return(list(fitted.model = fitted,
@@ -16,6 +17,8 @@ analysis.of.variance.two <- function(Y, X1, X2, data){
 analysis.posthoc <- function(model, fitted.model) {
   if (fitted.model$`Pr(>F)`[1] < 0.05) {
     TukeyHSD(model)
+  } else {
+    return ()
   }
 }
 
@@ -40,6 +43,7 @@ kruskal.posthoc <- function(Y, X, model, data){
 anova.test.param <- function(option, Y, X1, X2, data){
   if (option == 'onesample'){
     stopifnot(is.factor(X1))
+    stopifnot(is.vector(Y) | is.numeric(Y) | length(Y) < 2)
     
     aov.model <- analysis.of.variance(Y, X1, data)
     
@@ -50,9 +54,9 @@ anova.test.param <- function(option, Y, X1, X2, data){
     cat('---------------------------------------------\n')
     analysis.posthoc(model, fit)
   } else if (option == 'twosamples') {
-    stopifnot(is.factor(X1),
-              is.factor(X2))
-
+    stopifnot(is.factor(X1) | is.factor(X2))
+    stopifnot(is.vector(Y) | is.numeric(Y) | length(Y) < 2)
+    
     aov.model <- analysis.of.variance.two(Y, X1, X2, data())
 
     fit <- aov.model$fitted.model
@@ -66,6 +70,8 @@ anova.test.param <- function(option, Y, X1, X2, data){
 
 anova.test.nonparam <- function(Y, X, data) {
   stopifnot(is.factor(X))
+  stopifnot(is.vector(Y) | is.numeric(Y) | length(Y) < 2)
+  
   model <- kruskal.analysis(Y, X, data)
   cat('---------------------------------------------\n')
   kruskal.posthoc(Y, X, model, data)
