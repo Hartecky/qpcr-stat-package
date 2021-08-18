@@ -1,5 +1,9 @@
 compare.means.param <- function(test.type, X, Y, mu, alternative, paired, confidence){
+  
   if (test.type == 'onesample') {
+    # check parameters conditions
+    stopifnot(is.vector(X) | is.numeric(X) | is.numeric(mu))
+    alpha_conditions(confidence)
     # one sample test
     t.test(x = X, 
            mu = mu,

@@ -11,6 +11,9 @@ setwd(CURRENT.PATH)
 # NECESSARY LIBRIARIES ---------------------------------------------------------
 source('packages.R')
 
+# VALIDATION
+source('condition_validation.R')
+
 # USER INTERFACE COMPONENTS ----------------------------------------------------
 source('ui/aov_nonparametric_ui.R')
 source('ui/aov_parametric_ui.R')
