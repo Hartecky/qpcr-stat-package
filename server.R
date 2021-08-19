@@ -307,9 +307,12 @@ server <- function(input, output, session) {
 
         if(colnames(diff.tmp)[1]=="Temperature"){
             new.data <- diff.calc(diff.tmp, as.integer(input$ref.curve))
-            melt.data <- melting.data(dataframe = new.data, 
+            melt.data <- melting.data(dataframe = new.data,
                                       id_variables = "Temperature")
+        } else {
+            fluorescence.error.message(data())
         }
+        
     })
     
     output$qpcr_plot_output <- renderPlotly({
