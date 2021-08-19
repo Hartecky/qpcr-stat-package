@@ -98,7 +98,7 @@ server <- function(input, output, session) {
     
     # FLUORESCENCE PLOT -----------------------
     output$ref.curve <- renderUI({
-        selectInput('ref.curve', 'Reference curve', choices = c(2:ncol(data())-1))
+        selectInput('ref.curve', 'Reference curve', choices = c(2:length(data())-1))
     })
 
     # BASE PLOTS ---------------------------------------------------------------
