@@ -1,4 +1,3 @@
-
 diff.calc <- function(dataframe, ref_index){
   
   
