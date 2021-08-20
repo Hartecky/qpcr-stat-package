@@ -1,3 +1,9 @@
+# ------------------------------------------------------------------------------
+# qPCR SHINY APP
+# DASHBOARD FOR STATISTICAL ANALYSIS OF QPCR DATA
+# LOADING ADDITIONAL PACKAGES AND SCRIPT FILES
+# ------------------------------------------------------------------------------
+
 # Packages names
 packages <- c("shiny",
               "plotly",
