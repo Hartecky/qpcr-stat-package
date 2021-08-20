@@ -5,9 +5,9 @@ account: amplistat
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 4384446
-bundleId: 4927881
+bundleId: 4941042
 url: https://amplistat.shinyapps.io/amplistat/
-when: 1629104097.48608
-lastSyncTime: 1629104097.48608
+when: 1629375896.86236
+lastSyncTime: 1629375896.86236
 asMultiple: FALSE
 asStatic: FALSE
