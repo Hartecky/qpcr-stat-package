@@ -1,4 +1,12 @@
+# Function which is generating plot with dilution curve
+# with marked points with limit of detection values
+# Parameters: 
 
+# data            - raw original dataset
+# pred.data       - processed dataset for LOD calculation
+# top.interval    - top interval data for plotting lines
+# bottom.interval - bottom interval data plotting lines
+# X.LOD           - calculated LOD (Limit of Detection) value
 lod.plot <- function(data, pred.data, top.interval, bottom.interval, X.LOD){
   
   dil <- 10^seq(-1,1,0.01)
