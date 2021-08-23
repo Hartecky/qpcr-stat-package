@@ -1,5 +1,5 @@
 # ------------------------------------------------------------------------------
-# AMPLISTAT SHINY APP
+# qPCR SHINY APP
 # DASHBOARD FOR STATISTICAL ANALYSIS OF QPCR DATA
 # USER INTERFACE COMPONENTS
 # ------------------------------------------------------------------------------
