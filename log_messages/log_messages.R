@@ -1,3 +1,4 @@
+# Prints messages and error logs of the assumptions operations
 assumptions.messages <- function(option, variable) {
   if (option == 'normtest') {
     
@@ -26,6 +27,7 @@ assumptions.messages <- function(option, variable) {
   }
 }
 
+# Prints help about making decision after performed test
 decision.making.messages <- function(option){
   if (option == 'normtest') {
     cat('Decision making based on p-value\n
@@ -35,7 +37,6 @@ decision.making.messages <- function(option){
         Whenp > 0.05 - Fail to reject H0 - distribution of 
         variable is not from normal distribution\n')
   } else if (option == 'vartest') {
-    
     cat('Decision making based on p-value\n
         
         When p < 0.05 - Reject H0 and accept alternative,
@@ -45,6 +46,8 @@ decision.making.messages <- function(option){
   }
 }
 
+# Prints error messages for LOD panel, if given data is not 3x3 matrix
+# with specified header 
 lod.error.message <- function(data) {
   
   names.list <- c('dilution', 'total', 'positive')
@@ -62,6 +65,7 @@ lod.error.message <- function(data) {
   }
 }
 
+# Prints error message for fluorescence data 
 fluorescence.error.message <- function(data) {
   stop("
   Data provided for qPCR fluorescence visualisation is incorrect. Exit code with status 1.
