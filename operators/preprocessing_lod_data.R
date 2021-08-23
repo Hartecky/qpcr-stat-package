@@ -1,4 +1,13 @@
+# This script includes a set of functions configuring a 3x3 provided matrix 
+# into a data frame to derive a detection limit value. 
+# GLM model for further LOD calculations is also prepared
 
+# Subtracts total and positives reaction results and binds the
+# difference with original positive results into new dataframe
+
+# Parameters:
+# dataframe   - provided 3x3 matrix with a dilution, positive results 
+#               and total samples 
 define.freq <- function(dataframe) {
   attach(dataframe)
   total.diff <- total - positive
@@ -10,12 +19,24 @@ define.freq <- function(dataframe) {
   return(Y)
 }
 
+# Fits GLM model to binomial data, using a logit link, and 
+# the method finds the model parameters that maximize 
+# the above likelihood
+
+# Parameters:
+# Y       - dependent variable for GLM model (matrix)
+# data    - dataframe
 fit.model <- function(Y, data) {
   model <- glm(Y ~ dilution,
                family = binomial(link = logit),
                data = data)
 }
 
+# Calculations of LOD value:
+# .
+# .
+# .
+# .
 logit.value <- function(alpha) {
   logit.LOD <- log(alpha / (1 - alpha))
   return(logit.LOD)
@@ -53,6 +74,10 @@ define.intervals <- function(x.lod, log.se.lod) {
   return(results)
 }
 
+# Wrapped function which is performing all operations one by one
+
+# Parameters:
+# dataframe   - 3x3 matrix provided by user
 lod.operations <- function(dataframe){
   Y <- define.freq(dataframe)
   model.glm <- fit.model(Y, dataframe)

@@ -1,4 +1,13 @@
-    
+# Function which is preparing data for plotting
+# Limit of Detection (LOD) curve. It predicts values of 
+# LOD for three given molecules concentration and then 
+# estimates the minimal value of genomes per qPCR reaction,
+# which investigated diagnostic kit will be able to capture
+
+# Parameters:
+# model   - GLM model object
+# x.lod   - calculated LOD value
+# alpha   - significance level
 prepare.set <- function(model, x.lod, alpha) {
   
   dil <- 10^seq(-1,1,0.01)

@@ -1,5 +1,4 @@
 # Checks range of provided alpha value
-
 # Parameters: 
 # alpha: value provided by user
 

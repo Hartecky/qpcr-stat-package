@@ -1,6 +1,5 @@
 # Histogram plotting function
 # Parameters:
-
 # x     - vector with observations
 # bins  - number of bins for histogram plot 
 hist.plot <- function(x, bins){
@@ -15,7 +14,6 @@ hist.plot <- function(x, bins){
 
 # Boxplot plotting function
 # Parameters:
-
 # x     - vector with observations
 # var   - variable name
 box.plot <- function(x, var){
@@ -30,7 +28,6 @@ box.plot <- function(x, var){
 
 # Scatter plotting function 
 # Parameters:
-
 # x     - vector with observations
 # var   - variable name
 scatter.plot <- function(x, var){
@@ -45,7 +42,6 @@ scatter.plot <- function(x, var){
 
 # Wrapped plotting function 
 # Plots data based on provided option
-
 # Parameters:
 # x           - vector of observations to visualise
 # var         - variable name
