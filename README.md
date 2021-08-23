@@ -1,1 +1,1 @@
-# AmpliStat
+# qPCR Statistical Interactive Shiny App
