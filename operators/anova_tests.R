@@ -1,9 +1,9 @@
 # This script contains functions which are performing means comparison
 # between groups :
-# One factor ANOVA
-# Two factor ANOVA
-# TukeyHS PostHoc test
-# Non-parametric Kruskal-Wallis test
+# - One factor ANOVA
+# - Two factor ANOVA
+# - TukeyHS PostHoc test
+# - Non-parametric Kruskal-Wallis test
 
 # Fits one factor ANOVA, and returns fitted model
 # Parameters:
