@@ -28,7 +28,7 @@ compare.means.param <- function(test.type, X, Y, mu, alternative, paired, confid
     # two sample paired test 
     stopifnot(is.vector(X) | is.numeric(X) | length(X) < 2)
     stopifnot(is.vector(Y) | is.numeric(Y) | length(X) < 2)
-    stopifnot(length(X) != length(Y))
+    stopifnot(length(X) == length(Y))
     t.test(x = X,
            y = Y,
            alternative = alternative,
@@ -39,7 +39,7 @@ compare.means.param <- function(test.type, X, Y, mu, alternative, paired, confid
     # two sample non-paired test
     stopifnot(is.vector(X) | is.numeric(X) | length(X) < 2)
     stopifnot(is.vector(Y) | is.numeric(Y) | length(X) < 2)
-    stopifnot(length(X) != length(Y))
+    stopifnot(length(X) == length(Y))
     t.test(x = X,
            y = Y,
            alternative = alternative,
