@@ -1,3 +1,13 @@
+# Calculates differences between fluorescence curves from qPCR reaction.
+# Its purpouse is to distinct genotypes between fluorescence curves from
+# High Resolution Melt (HRM) reaction. Differences are calculated based
+# on reference curve, which is selected from input by user via shiny app.
+# Parameters:
+# dataframe     - dataframe containing Temperature values in the first column
+#                 samples with a fluorescence signal in the remaining columns
+# ref_index     - reference curve selected by user. It is used as reference
+#                 to calculate differences between them.
+# Returns calculated dataframe with diff calculation
 diff.calc <- function(dataframe, ref_index){
   
   
