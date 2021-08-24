@@ -15,7 +15,8 @@ packages <- c("shiny",
               "rcompanion",
               "rsconnect",
               "shinydashboard",
-              "outliers")
+              "outliers",
+              "rsconnect")
 
 # Additional source file names
 additional.files <- c("ui/aov_nonparametric_ui.R",

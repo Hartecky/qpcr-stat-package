@@ -15,7 +15,7 @@ source('packages.R')
 ui <- fluidPage(
   theme = shinytheme("darkly"),
   navbarPage(
-    'AmpliStat',
+    'qPCR Stat',
     
     # DATA UPLOAD UI PANEL -----------------------------------------------------
     data.upload,
